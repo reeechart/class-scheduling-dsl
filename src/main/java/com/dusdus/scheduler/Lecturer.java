@@ -11,6 +11,10 @@ public class Lecturer {
         this.availability = new ArrayList<Schedule>();
     }
 
+    public ArrayList<Schedule> getAvailability() {
+        return availability;
+    }
+
     public void addSchedule(Schedule schedule) {
         availability.add(schedule);
     }

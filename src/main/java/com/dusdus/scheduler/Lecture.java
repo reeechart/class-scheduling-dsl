@@ -6,23 +6,44 @@ public class Lecture {
     // Class requirements
     private String id;
     private Lecturer lecturer;
-    private ArrayList<LectureSchedule> lectureSchedules;
     private ArrayList<String> facilities;
-    private int maxParticipants;
+    private Integer maxParticipants;
+
+    public Lecture(String id, Integer maxParticipants) {
+        this.facilities = new ArrayList<>();
+        this.id = id;
+        this.maxParticipants = maxParticipants;
+    }
+
+    public String getId() {
+        return id;
+    }
 
     public Lecturer getLecturer() {
         return lecturer;
-    }
-
-    public ArrayList<LectureSchedule> getLectureSchedules() {
-        return lectureSchedules;
     }
 
     public ArrayList<String> getFacilities() {
         return facilities;
     }
 
-    public int getMaxParticipants() {
+    public Integer getMaxParticipants() {
         return maxParticipants;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
+    }
+
+    public void addFacility(String facility) {
+        this.facilities.add(facility);
+    }
+
+    public void delFacilities() {
+        this.facilities = new ArrayList<>();
     }
 }

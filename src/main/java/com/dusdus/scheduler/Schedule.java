@@ -4,8 +4,8 @@ import java.util.Calendar;
 
 public class Schedule {
     private String start;
-    private int hour;
-    private int day;
+    private Integer hour;
+    private Integer day;
 
     public Schedule(String start) {
         this.start = start;
@@ -14,15 +14,19 @@ public class Schedule {
         day = Integer.parseInt(schedule[1]);
     }
 
-    public int getHour() {
+    public Integer getHour() {
         return hour;
     }
 
-    public int getDay() {
+    public Integer getDay() {
         return day;
     }
 
     public String getStartTimeString() {
         return start;
+    }
+
+    public void printSchedule() {
+        System.out.printf("%d %d", day, hour);
     }
 }
