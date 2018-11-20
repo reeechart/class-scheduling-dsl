@@ -8,6 +8,7 @@ public class Lecture {
     private Lecturer lecturer;
     private ArrayList<String> facilities;
     private Integer maxParticipants;
+    private Integer credits;
 
     public Lecture(String id, Integer maxParticipants) {
         this.facilities = new ArrayList<>();
@@ -31,6 +32,10 @@ public class Lecture {
         return maxParticipants;
     }
 
+    public Integer getCredits() {
+        return credits;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -45,5 +50,9 @@ public class Lecture {
 
     public void delFacilities() {
         this.facilities = new ArrayList<>();
+    }
+
+    public void setCredits(Integer credits) {
+        this.credits = credits;
     }
 }
