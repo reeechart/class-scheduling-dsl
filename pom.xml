@@ -5,8 +5,22 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.dusdus.scheduler</groupId>
-    <artifactId>Main</artifactId>
+    <artifactId>ClassSchedulingDSL</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
