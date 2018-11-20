@@ -13,27 +13,33 @@ public class Main {
 
         Schedule schedule = new Schedule("1,2");
         Schedule schedule2 = new Schedule("1,3");
-//        Schedule schedule3 = new Schedule("1,4");
+        Schedule schedule3 = new Schedule("1,4");
 //        Schedule schedule4 = new Schedule("1,5");
 //        Schedule schedule5 = new Schedule("1,6");
 
         Lecturer lecturer = new Lecturer("John");
         lecturer.addSchedule(schedule);
         lecturer.addSchedule(schedule2);
-//        lecturer.addSchedule(schedule3);
+        lecturer.addSchedule(schedule3);
 //        lecturer.addSchedule(schedule4);
 //        lecturer.addSchedule(schedule5);
 
+        Lecturer smith = new Lecturer("Smith");
+        smith.addSchedule(schedule);
+        smith.addSchedule(schedule2);
+        smith.addSchedule(schedule3);
+
         Lecture lecture = new Lecture("IF4019", 30,2);
-        lecture.addFacility("ac");
+        lecture.addFacility("proyektor");
         lecture.setLecturer(lecturer);
 
         Lecture lecture2 = new Lecture("IF4029", 30,3);
         lecture2.addFacility("proyektor");
-        lecture2.setLecturer(lecturer);
+        lecture2.setLecturer(smith);
 
         Constraint const1 = new Constraint("IF4019", "IF4029");
         Classroom classroom = new Classroom("7602", 40);
+        classroom.addFacility("proyektor");
 
         Classroom classroom2 = new Classroom("7603", 40);
         classroom2.addFacility("proyektor");
@@ -59,8 +65,12 @@ public class Main {
 //
 //        System.out.println(lecture.getId());
 //        System.out.println(lecture.getMaxParticipants());
+        Iterator<Lecture> itr = lectures.iterator();
+        while(itr.hasNext()) {
+            Lecture lec = itr.next();
+            scheduler.addLectureSchedule(lec);
+        };
 
-        scheduler.addLectureSchedule(lecture);
         scheduler.schedule();
 
     }
