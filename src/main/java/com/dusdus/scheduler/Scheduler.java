@@ -10,13 +10,13 @@ public class Scheduler {
     private Timetable timetable;
     private ArrayList<Lecture> lectures;
     private ArrayList<Classroom> classrooms;
-    private Map<String, LectureSchedule> lectureScheduleMap;
+    private ArrayList<LectureSchedule> lectureScheduleArrayList;
 
     public Scheduler(Timetable timetable, ArrayList<Lecture> lectures, ArrayList<Classroom> classrooms) {
         this.timetable = timetable;
         this.lectures = lectures;
         this.classrooms = classrooms;
-        this.lectureScheduleMap = new HashMap<String, LectureSchedule>();
+        this.lectureScheduleArrayList = new ArrayList<>();
     }
 
     public ArrayList<Classroom> findClassrooms(Lecture lecture) {
@@ -48,10 +48,22 @@ public class Scheduler {
         return result;
     }
 
-    public void setLectureSchedule(Lecture lecture) {
+    public void addLectureSchedule(Lecture lecture) {
         ArrayList<Classroom> result = findClassrooms(lecture);
-        LectureSchedule lectureSchedule = new LectureSchedule(result.get(0), lecture);
-        lectureScheduleMap.put(lecture.getId(), lectureSchedule);
+        LectureSchedule lectureSchedule = new LectureSchedule(result, lecture);
+        lectureScheduleArrayList.add(lectureSchedule);
+    }
+
+    public void setLectureScheduleToTimetable(LectureSchedule lectureSchedule) {
+        timetable.schedule(lectureSchedule,0);
+    }
+
+    public void schedule() {
+        System.out.println(lectureScheduleArrayList.size());
+        for (int i = 0; i < lectureScheduleArrayList.size(); i++) {
+            setLectureScheduleToTimetable(lectureScheduleArrayList.get(i));
+        }
+        timetable.printTimetable();
     }
 
 

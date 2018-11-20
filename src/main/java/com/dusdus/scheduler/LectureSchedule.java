@@ -1,19 +1,37 @@
 package com.dusdus.scheduler;
 
-public class LectureSchedule {
-    private Lecture lecture;
-    private Classroom classroom;
+import java.util.ArrayList;
 
-    public LectureSchedule(Classroom classroom, Lecture lecture) {
-        this.classroom = classroom;
+public class LectureSchedule {
+
+    private Lecture lecture;
+    private ArrayList<Classroom> availableClassroom;
+    private Classroom allocatedClassroom;
+
+    public LectureSchedule(ArrayList<Classroom> classrooms, Lecture lecture) {
+        this.availableClassroom = classrooms;
         this.lecture = lecture;
     }
 
-    public Classroom getClassroom() {
-        return classroom;
+    public Classroom getClassroom(Integer idx) {
+        return availableClassroom.get(idx);
+    }
+
+    public Classroom getAllocatedClassroom() {
+        return allocatedClassroom;
+    }
+
+    public void setAllocatedClassroom(Classroom allocatedClassroom) {
+        this.allocatedClassroom = allocatedClassroom;
     }
 
     public Lecture getLecture() {
         return lecture;
     }
+
+    public void printLectureSchedule() {
+        System.out.printf("Lecture ID: %s \n", lecture.getId());
+
+    }
+
 }

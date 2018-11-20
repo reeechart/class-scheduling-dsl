@@ -10,10 +10,11 @@ public class Lecture {
     private Integer maxParticipants;
     private Integer credits;
 
-    public Lecture(String id, Integer maxParticipants) {
+    public Lecture(String id, Integer maxParticipants, Integer credits) {
         this.facilities = new ArrayList<>();
         this.id = id;
         this.maxParticipants = maxParticipants;
+        this.credits = credits;
     }
 
     public String getId() {

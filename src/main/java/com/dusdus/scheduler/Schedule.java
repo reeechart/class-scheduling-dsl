@@ -10,8 +10,8 @@ public class Schedule {
     public Schedule(String start) {
         this.start = start;
         String[] schedule = start.split(",");
-        hour = Integer.parseInt(schedule[0]);
-        day = Integer.parseInt(schedule[1]);
+        hour = Integer.parseInt(schedule[1]);
+        day = Integer.parseInt(schedule[0]);
     }
 
     public Integer getHour() {
