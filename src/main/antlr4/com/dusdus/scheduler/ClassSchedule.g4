@@ -11,7 +11,8 @@ command: (create_classroom |
           create_lecturer |
           add_lecturer_availability |
           add_constraint|
-          add_preference)
+          add_preference |
+          show_timetable)
           END_OF_COMMAND;
 create_classroom: 'CREATE CLASSROOM ' CLASSROOM_ID WHITESPACE capacity;
 add_facility: 'ADD FACILITY ' CLASSROOM_ID WHITESPACE facilities;
@@ -21,16 +22,19 @@ create_lecturer: 'CREATE LECTURER ' lecturer_name;
 add_lecturer_availability: 'ADD AVAILABILITY ' lecturer_name WHITESPACE schedule;
 add_constraint: 'ADD CONSTRAINT ' LECTURE_ID WHITESPACE LECTURE_ID;
 add_preference: 'ADD PREFERENCE ' LECTURE_ID WHITESPACE COMPARATOR 'THAN ' hour_of_day;
+show_timetable: 'SHOW TIMETABLE';
+
 max_participant: NUM;
 capacity: NUM;
 credits: NUM;
 schedule: day_number WHITESPACE hour_of_day;
 day_number: NUM; // 1-5
 hour_of_day: NUM; //(([7-9]) | ('1' [0-7]));
-facilities: '(' WHITESPACE* facility_name (DELIMITER facility_name)* WHITESPACE* ')';
+facilities: '(' WHITESPACE* facility_name (DELIMITER facility_name)* DELIMITER* WHITESPACE* ')';
 facility_name: (WORD) (WHITESPACE (WORD))*;
 lecturer_name: (WORD) (WHITESPACE (WORD))*;
 lecture_params: '(' WHITESPACE* lecturer_name DELIMITER max_participant DELIMITER credits WHITESPACE*')';
+
 /*
  * Lexer Rules
  */
@@ -42,12 +46,6 @@ fragment NONZERO_DIGIT: [1-9];
 WORD: UPPERCASE+ | LOWERCASE+ | CAPITAL_FIRST_LETTER;
 
 CAPITAL_FIRST_LETTER: UPPERCASE LOWERCASE+;
-
-//SCHEDULE: (DAY_NUMBER WHITESPACE HOUR_OF_DAY);
-
-//DAY_NUMBER: NUM; // 1-5
-//
-//HOUR_OF_DAY: NUM; //(([7-9]) | ('1' [0-7]));
 
 NUM: DIGIT | NONZERO_DIGIT DIGIT+ ;
 
