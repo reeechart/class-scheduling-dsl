@@ -19,7 +19,6 @@ public class Timetable {
                 timetable.get(i).add(new ArrayList<>());
             }
         }
-
     }
 
     public void setLectureSchedule(Integer day, Integer hour, LectureSchedule lectureSchedule) {
@@ -29,7 +28,10 @@ public class Timetable {
     public ArrayList<Schedule> schedule( LectureSchedule lectureSchedule, Integer currentClassroom) {
         ArrayList<Schedule> settedSchedule = new ArrayList<>();
         Integer counter = lectureSchedule.getLecture().getCredits();
+        System.out.println(String.format("COUNTER: %d", counter));
         ArrayList<Schedule> scheduleList = lectureSchedule.getLecture().getLecturer().getAvailability();
+
+        System.out.println(String.format("CLASSROOM: %s", lectureSchedule.getClassroom(currentClassroom).getId()));
 
         // Set classroom according to availability
         for(int i = 0; i < scheduleList.size(); i++) {
@@ -38,7 +40,6 @@ public class Timetable {
             current.printSchedule();
 
             // Iterate through setted lecture in available schedule
-
             Integer allocatedLectureSize = timetable.get(current.getDay()).get(current.getHour()).size();
             boolean conflict = false;
             for (int j = 0; j < allocatedLectureSize; j++) {
@@ -48,6 +49,8 @@ public class Timetable {
                 // Check if classroom is used
                 if (settedLecture.getAllocatedClassroom().getId()
                         .equals(lectureSchedule.getClassroom(currentClassroom).getId())) {
+                    System.out.println(String.format("ALLOCATED: %s",settedLecture.getAllocatedClassroom().getId()));
+                    System.out.println(String.format("CUrrent: %s",lectureSchedule.getClassroom(currentClassroom).getId()));
                     conflict = true;
                 }
             }
@@ -66,6 +69,7 @@ public class Timetable {
 
         // Check if all credits is setted
         if (counter > 0) {
+            System.out.println(String.format("Setted SIZE: %d", settedSchedule.size()));
 
             // Remove all allocated timeslot if no available time
             for (int i = 0; i < settedSchedule.size(); i++) {
@@ -77,9 +81,13 @@ public class Timetable {
 
             //Recursively search for available slot
             Integer nextClassroom = currentClassroom + 1;
-            settedSchedule = schedule(lectureSchedule, nextClassroom);
+            System.out.println(nextClassroom);
+            if(nextClassroom < lectureSchedule.getAvailableClassroom().size()) {
+                settedSchedule = schedule(lectureSchedule, nextClassroom);
+            }
 
         }
+
         return settedSchedule;
 
     }

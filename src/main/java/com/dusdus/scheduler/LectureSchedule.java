@@ -17,6 +17,10 @@ public class LectureSchedule {
         return availableClassroom.get(idx);
     }
 
+    public ArrayList<Classroom> getAvailableClassroom() {
+        return availableClassroom;
+    }
+
     public Classroom getAllocatedClassroom() {
         return allocatedClassroom;
     }
