@@ -8,7 +8,7 @@ public class Classroom {
     private Integer capacity;
 
     public Classroom(String id, Integer capacity) {
-        facilities = new ArrayList<>();
+        facilities = new ArrayList<String>();
 
         this.id  = id;
         this.capacity = capacity;
