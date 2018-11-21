@@ -25,7 +25,9 @@ public class Timetable {
         timetable.get(day).get(hour).add(lectureSchedule);
     }
 
-    public ArrayList<Schedule> schedule( LectureSchedule lectureSchedule, Integer currentClassroom) {
+    public ArrayList<Schedule> schedule( LectureSchedule lectureSchedule, Integer currentClassroom,
+                                         ConflictingConstraint constraint) {
+
         ArrayList<Schedule> settedSchedule = new ArrayList<>();
         Integer counter = lectureSchedule.getLecture().getCredits();
         System.out.println(String.format("COUNTER: %d", counter));
@@ -33,15 +35,15 @@ public class Timetable {
 
         System.out.println(String.format("CLASSROOM: %s", lectureSchedule.getClassroom(currentClassroom).getId()));
 
-        // Set classroom according to availability
+        // Set classroom according to availability and constraints
         for(int i = 0; i < scheduleList.size(); i++) {
-            System.out.println(String.format("Schedule index: %d", i));
             Schedule current = scheduleList.get(i);
             current.printSchedule();
 
             // Iterate through setted lecture in available schedule
             Integer allocatedLectureSize = timetable.get(current.getDay()).get(current.getHour()).size();
             boolean conflict = false;
+
             for (int j = 0; j < allocatedLectureSize; j++) {
                 System.out.println(String.format("Allocated Lecture index: %d", j));
                 LectureSchedule settedLecture = timetable.get(current.getDay()).get(current.getHour()).get(j);
@@ -53,14 +55,26 @@ public class Timetable {
                     System.out.println(String.format("CUrrent: %s",lectureSchedule.getClassroom(currentClassroom).getId()));
                     conflict = true;
                 }
+
+                // Check for constraints
+                if (constraint != null) {
+                    String conflictingLecture = constraint.getValue(lectureSchedule.getLecture().getId());
+                    System.out.println(String.format("CONSTRAINTS: %s, %s", conflictingLecture,
+                            settedLecture.getAllocatedClassroom().getId()));
+                    if (conflictingLecture.equals(settedLecture.getAllocatedClassroom().getId())) {
+                        conflict = true;
+                    }
+                }
             }
 
             if (!conflict) {
+
                 // Set lecture to timetable and allocate class
                 counter--;
                 System.out.println(String.format("COUNTER: %d", counter));
                 lectureSchedule.setAllocatedClassroom(lectureSchedule.getClassroom(currentClassroom));
                 setLectureSchedule(current.getDay(), current.getHour(), lectureSchedule);
+                settedSchedule.add(current);
                 if (counter == 0) {
                     break;
                 }
@@ -83,7 +97,7 @@ public class Timetable {
             Integer nextClassroom = currentClassroom + 1;
             System.out.println(nextClassroom);
             if(nextClassroom < lectureSchedule.getAvailableClassroom().size()) {
-                settedSchedule = schedule(lectureSchedule, nextClassroom);
+                settedSchedule = schedule(lectureSchedule, nextClassroom, constraint);
             }
 
         }
@@ -102,8 +116,8 @@ public class Timetable {
                 System.out.println(String.format("Day %s - Time %s: [", day, time));
                 for (int i = 0; i < timetable.get(day).get(time).size(); i++) {
                     LectureSchedule current = timetable.get(day).get(time).get(i);
-                    System.out.println(String.format("(%s %s),", current.getLecture().getId(),
-                            current.getAllocatedClassroom().getId()));
+                    System.out.println(String.format("(%s-%s, %s),", current.getLecture().getId(),
+                            current.getLecture().getLecturer().getName(), current.getAllocatedClassroom().getId()));
                 }
                 System.out.printf("]\n");
             }
