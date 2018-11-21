@@ -1,15 +1,32 @@
 package com.dusdus.scheduler;
 
+import org.antlr.v4.runtime.ANTLRFileStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+
 import javax.sound.midi.SysexMessage;
+import java.io.InputStream;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Main {
     public static void main(String[] args) {
+        try {
+            ClassScheduleLexer classScheduleLexer = new ClassScheduleLexer(new ANTLRFileStream("resources/tes.dd"));
+            CommonTokenStream tokens = new CommonTokenStream(classScheduleLexer);
+            ClassScheduleParser classScheduleParser = new ClassScheduleParser(tokens);
+
+            Timetable timetable = new Timetable();
+            classScheduleParser.addParseListener(new ClassScheduleParseTreeListener(timetable));
+            classScheduleParser.program();
+        } catch (Exception e) {
+            // log error
+        }
+/* //SCHEDULING TEST
         Timetable timetable = new Timetable();
-        ArrayList<Lecture> lectures = new ArrayList<>();
-        ArrayList<Classroom> classrooms = new ArrayList<>();
+        ArrayList<Lecture> lectures = new ArrayList<Lecture>();
+        ArrayList<Classroom> classrooms = new ArrayList<Classroom>();
 
         Schedule schedule = new Schedule("1,2");
         Schedule schedule2 = new Schedule("1,3");
@@ -72,6 +89,6 @@ public class Main {
         };
 
         scheduler.schedule();
-
+*/
     }
 }
