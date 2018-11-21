@@ -13,6 +13,12 @@ public class LectureSchedule {
         this.lecture = lecture;
     }
 
+    public LectureSchedule(LectureSchedule lectureSchedule) {
+        this.availableClassroom = lectureSchedule.availableClassroom;
+        this.lecture = lectureSchedule.lecture;
+        this.allocatedClassroom = lectureSchedule.allocatedClassroom;
+    }
+
     public Classroom getClassroom(Integer idx) {
         return availableClassroom.get(idx);
     }
@@ -34,7 +40,7 @@ public class LectureSchedule {
     }
 
     public void printLectureSchedule() {
-        System.out.printf("Lecture ID: %s \n", lecture.getId());
+        System.out.printf("Lecture ID: %s - Classroom: %s \n", lecture.getId(),allocatedClassroom.getId());
 
     }
 
