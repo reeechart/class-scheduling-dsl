@@ -16,6 +16,9 @@ public class Main {
         Schedule schedule3 = new Schedule("1,4");
         Schedule schedule4 = new Schedule("1,5");
         Schedule schedule5 = new Schedule("1,6");
+        Schedule schedule6 = new Schedule("1,7");
+        Schedule wed1 = new Schedule("2,1");
+        Schedule wed6 = new Schedule("2,6");
 
         Lecturer john = new Lecturer("John");
         john.addSchedule(schedule);
@@ -28,6 +31,16 @@ public class Main {
         smith.addSchedule(schedule3);
         smith.addSchedule(schedule4);
         smith.addSchedule(schedule5);
+
+        Lecturer maya = new Lecturer("Maya");
+        maya.addSchedule(schedule5);
+        maya.addSchedule(schedule6);
+
+        Lecturer vincent = new Lecturer("Vincent");
+        vincent.addSchedule(schedule);
+        vincent.addSchedule(schedule2);
+        vincent.addSchedule(wed1);
+        vincent.addSchedule(wed6);
 
         Lecturer doe = new Lecturer("Doe)");
         doe.addSchedule(schedule2);
@@ -44,6 +57,15 @@ public class Main {
         Lecture if4012 = new Lecture("IF4012", 30, 2);
         if4012.addFacility("ac");
         if4012.setLecturer(doe);
+
+        Lecture if4022 = new Lecture("IF4022", 30, 2);
+        if4022.addFacility("proyektor");
+        if4022.setLecturer(maya);
+
+
+        Lecture if4062 = new Lecture("IF4062", 30, 2);
+        if4062.addFacility("proyektor");
+        if4062.setLecturer(vincent);
 
         ConflictingConstraint const1 = new ConflictingConstraint();
         const1.addKeyValue("IF4019", "IF4029");
@@ -67,6 +89,8 @@ public class Main {
         lectures.add(lecture);
         lectures.add(lecture2);
         lectures.add(if4012);
+        lectures.add(if4022);
+        lectures.add(if4062);
 
         Scheduler scheduler = new Scheduler(timetable, lectures, classrooms);
         scheduler.addConflictingConstraint(const1);

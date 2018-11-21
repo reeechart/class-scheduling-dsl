@@ -27,6 +27,6 @@ public class Schedule {
     }
 
     public void printSchedule() {
-        System.out.printf("%d %d", day, hour);
+        System.out.printf("%d %d\n", day, hour);
     }
 }
