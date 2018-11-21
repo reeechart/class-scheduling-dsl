@@ -3,31 +3,64 @@ grammar ClassSchedule;
  * Parser Rules
  */
 
-create_lecturer: 'CREATE LECTURER ' LECTURER_NAME;
-add_lecturer_availability: 'ADD AVAILABILITY ' LECTURER_NAME WHITESPACE SCHEDULE;
+program: command+;
+command: (create_classroom |
+          create_lecture |
+          add_facility |
+          add_requirement |
+          create_lecturer |
+          add_lecturer_availability |
+          add_constraint|
+          add_preference |
+          show_timetable)
+          END_OF_COMMAND;
+create_classroom: 'CREATE CLASSROOM ' CLASSROOM_ID WHITESPACE capacity;
+add_facility: 'ADD FACILITY ' CLASSROOM_ID WHITESPACE facilities;
+create_lecture: 'CREATE LECTURE ' LECTURE_ID WHITESPACE lecture_params;
+add_requirement: 'ADD REQUIREMENT ' LECTURE_ID WHITESPACE facilities;
+create_lecturer: 'CREATE LECTURER ' lecturer_name;
+add_lecturer_availability: 'ADD AVAILABILITY ' lecturer_name WHITESPACE schedule;
 add_constraint: 'ADD CONSTRAINT ' LECTURE_ID WHITESPACE LECTURE_ID;
-add_preference: 'ADD PREFERENCE ' LECTURE_ID WHITESPACE COMPARATOR ' THAN ' HOUR_OF_DAY;
+add_preference: 'ADD PREFERENCE ' LECTURE_ID WHITESPACE COMPARATOR 'THAN ' hour_of_day;
+show_timetable: 'SHOW TIMETABLE';
+
+max_participant: NUM;
+capacity: NUM;
+credits: NUM;
+schedule: day_number WHITESPACE hour_of_day;
+day_number: NUM; // 1-5
+hour_of_day: NUM; //(([7-9]) | ('1' [0-7]));
+facilities: '(' WHITESPACE* facility_name (DELIMITER facility_name)* DELIMITER* WHITESPACE* ')';
+facility_name: (WORD) (WHITESPACE (WORD))*;
+lecturer_name: (WORD) (WHITESPACE (WORD))*;
+lecture_params: '(' WHITESPACE* lecturer_name DELIMITER max_participant DELIMITER credits WHITESPACE*')';
 
 /*
  * Lexer Rules
  */
 
-DIGIT: [0-9];
+fragment DIGIT: [0-9];
 
-LECTURER_NAME: (UPPERCASE LOWERCASE+) (WHITESPACE (UPPERCASE LOWERCASE+))*;
+fragment NONZERO_DIGIT: [1-9];
 
-SCHEDULE: (DAY_NUMBER WHITESPACE HOUR_OF_DAY);
+WORD: UPPERCASE+ | LOWERCASE+ | CAPITAL_FIRST_LETTER;
 
-DAY_NUMBER: [1-5];
+CAPITAL_FIRST_LETTER: UPPERCASE LOWERCASE+;
 
-HOUR_OF_DAY: (([7-9]) | ([1][0-7]));
+NUM: DIGIT | NONZERO_DIGIT DIGIT+ ;
+
+CLASSROOM_ID: 'C' DIGIT DIGIT DIGIT DIGIT;
 
 LECTURE_ID: (UPPERCASE UPPERCASE DIGIT DIGIT DIGIT DIGIT);
 
-COMPARATOR: ('GREATER' | 'LESS');
+COMPARATOR: ('GREATER ' | 'LESS ');
 
 UPPERCASE: [A-Z];
 
 LOWERCASE: [a-z];
 
-WHITESPACE : ' ';
+DELIMITER: WHITESPACE* ',' WHITESPACE*;
+
+WHITESPACE : ( ' ' | '\t' | '\r' | '\n' )+;
+
+END_OF_COMMAND: WHITESPACE* ';' WHITESPACE*;
