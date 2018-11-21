@@ -14,8 +14,8 @@ command: (create_classroom |
           add_preference |
           show_timetable)
           END_OF_COMMAND;
-create_classroom: 'CREATE CLASSROOM ' CLASSROOM_ID WHITESPACE capacity;
-add_facility: 'ADD FACILITY ' CLASSROOM_ID WHITESPACE facilities;
+create_classroom: 'CREATE CLASSROOM ' classroom_id WHITESPACE capacity;
+add_facility: 'ADD FACILITY ' classroom_id WHITESPACE facilities;
 create_lecture: 'CREATE LECTURE ' LECTURE_ID WHITESPACE lecture_params;
 add_requirement: 'ADD REQUIREMENT ' LECTURE_ID WHITESPACE facilities;
 create_lecturer: 'CREATE LECTURER ' lecturer_name;
@@ -24,6 +24,8 @@ add_constraint: 'ADD CONSTRAINT ' LECTURE_ID WHITESPACE LECTURE_ID;
 add_preference: 'ADD PREFERENCE ' LECTURE_ID WHITESPACE COMPARATOR 'THAN ' hour_of_day;
 show_timetable: 'SHOW TIMETABLE';
 
+classroom_id: CLASSROOM_ID;
+lecture_id: LECTURE_ID;
 max_participant: NUM;
 capacity: NUM;
 credits: NUM;
