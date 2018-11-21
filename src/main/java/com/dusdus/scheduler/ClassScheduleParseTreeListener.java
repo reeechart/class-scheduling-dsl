@@ -7,8 +7,12 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         this.timetable = timetable;
     }
 
+    public void enterProgram(ClassScheduleParser.ProgramContext ctx) {
+        System.out.println("Enter Program");
+    }
+
     @Override
-    public void enterCreate_classroom(ClassScheduleParser.Create_classroomContext ctx) {
+    public void exitCreate_classroom(ClassScheduleParser.Create_classroomContext ctx) {
         System.out.println("Classroom ID:" + ctx.classroom_id().CLASSROOM_ID());
         System.out.println("Classroom Capacity " + ctx.capacity().NUM());
     }
