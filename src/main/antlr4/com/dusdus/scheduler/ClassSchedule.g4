@@ -29,7 +29,9 @@ lecture_id: LECTURE_ID;
 max_participant: NUM;
 capacity: NUM;
 credits: NUM;
-schedule: day_number WHITESPACE hour_of_day;
+time_slot: (WHITESPACE* day_number WHITESPACE hour_of_day WHITESPACE*)
+schedule: '(' time_slot
+    (DELIMITER* time_slot)* ')';
 day_number: NUM; // 1-5
 hour_of_day: NUM; //(([7-9]) | ('1' [0-7]));
 facilities: '(' WHITESPACE* facility_name (DELIMITER facility_name)* DELIMITER* WHITESPACE* ')';
