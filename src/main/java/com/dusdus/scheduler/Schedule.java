@@ -29,4 +29,12 @@ public class Schedule {
     public void printSchedule() {
         System.out.printf("%d %d\n", day, hour);
     }
+
+    public boolean compareSchedule(Schedule schedule) {
+        if (schedule.getDay() == day && schedule.getHour() == hour) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

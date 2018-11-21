@@ -12,18 +12,18 @@ import java.util.Iterator;
 
 public class Main {
     public static void main(String[] args) {
-        try {
-            ClassScheduleLexer classScheduleLexer = new ClassScheduleLexer(new ANTLRFileStream("resources/tes.dd"));
-            CommonTokenStream tokens = new CommonTokenStream(classScheduleLexer);
-            ClassScheduleParser classScheduleParser = new ClassScheduleParser(tokens);
-
-            Timetable timetable = new Timetable();
-            classScheduleParser.addParseListener(new ClassScheduleParseTreeListener(timetable));
-            classScheduleParser.program();
-        } catch (Exception e) {
-            // log error
-        }
-/* //SCHEDULING TEST
+//        try {
+//            ClassScheduleLexer classScheduleLexer = new ClassScheduleLexer(new ANTLRFileStream("resources/tes.dd"));
+//            CommonTokenStream tokens = new CommonTokenStream(classScheduleLexer);
+//            ClassScheduleParser classScheduleParser = new ClassScheduleParser(tokens);
+//
+//            Timetable timetable = new Timetable();
+//            classScheduleParser.addParseListener(new ClassScheduleParseTreeListener(timetable));
+//            classScheduleParser.program();
+//        } catch (Exception e) {
+//            // log error
+//        }
+//SCHEDULING TEST
         Timetable timetable = new Timetable();
         ArrayList<Lecture> lectures = new ArrayList<Lecture>();
         ArrayList<Classroom> classrooms = new ArrayList<Classroom>();
@@ -41,6 +41,10 @@ public class Main {
         john.addSchedule(schedule);
         john.addSchedule(schedule2);
         john.addSchedule(schedule3);
+
+        Lecturer richard = new Lecturer("Richard");
+        richard.addSchedule(schedule);
+        richard.addSchedule(schedule2);
 
         Lecturer smith = new Lecturer("Smith");
         smith.addSchedule(schedule);
@@ -79,10 +83,13 @@ public class Main {
         if4022.addFacility("proyektor");
         if4022.setLecturer(maya);
 
-
         Lecture if4062 = new Lecture("IF4062", 30, 2);
         if4062.addFacility("proyektor");
         if4062.setLecturer(vincent);
+
+        Lecture if4162 = new Lecture("IF4162", 30, 2);
+        if4162.addFacility("ac");
+        if4162.setLecturer(richard);
 
         ConflictingConstraint const1 = new ConflictingConstraint();
         const1.addKeyValue("IF4019", "IF4029");
@@ -108,6 +115,7 @@ public class Main {
         lectures.add(if4012);
         lectures.add(if4022);
         lectures.add(if4062);
+        lectures.add(if4162);
 
         Scheduler scheduler = new Scheduler(timetable, lectures, classrooms);
         scheduler.addConflictingConstraint(const1);
@@ -132,6 +140,6 @@ public class Main {
         };
 
         scheduler.schedule();
-*/
+
     }
 }
