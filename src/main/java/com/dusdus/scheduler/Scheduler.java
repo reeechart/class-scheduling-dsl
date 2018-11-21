@@ -61,7 +61,7 @@ public class Scheduler {
     }
 
     public void setLectureScheduleToTimetable(LectureSchedule lectureSchedule) {
-        timetable.schedule(lectureSchedule,0, constraints);
+        timetable.schedule(lectureSchedule,0, new ArrayList<Schedule>(), constraints);
     }
 
     public void schedule() {

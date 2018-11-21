@@ -10,11 +10,10 @@ public class ConflictingConstraint {
     }
 
     public String getValue(String key) {
-        System.out.println(key);
         if (constraintList.containsKey(key)) {
             return constraintList.get(key);
         } else {
-            return "TETOT";
+            return "";
         }
 
     }
