@@ -77,9 +77,19 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         String lecturerName = extractWORDS(ctx.lecture_params().lecturer_name().WORD());
         int maxParticipant = Integer.parseInt(ctx.lecture_params().max_participant().NUM().toString());
         int credits = Integer.parseInt(ctx.lecture_params().credits().NUM().toString());
+
+        String errorMessages = "";
         if(credits > 10) {
-            printError("Max credits limit exceeded. Max: 10, Found: " + credits, ctx.getText());
+            errorMessages = "Max credits limit exceeded. Max: 10, Found: " + credits + "\n";
         }
+        if(searchLecturer(lecturerName) == -1) {
+            errorMessages = errorMessages + "Lecturer " + lecturerName + " not found";
+        }
+        if(!errorMessages.equals("")) {
+            printError(errorMessages, ctx.getText());
+            exitProgramError();
+        }
+
         Lecture lecture = new Lecture(lectureID, maxParticipant, credits);
         lectures.add(lecture);
     }
@@ -138,14 +148,14 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         lectureIDs[0] = ctx.LECTURE_ID(0).toString();
         lectureIDs[1] = ctx.LECTURE_ID(1).toString();
 
-        int errorCount = 0;
+        String errorMessage = "";
         for(String lectureID: lectureIDs) {
             if(searchLecture(lectureID) == -1) {
-                errorCount++;
-                printError("Lecture " + lectureID + " not found.", ctx.getText());
+                errorMessage = errorMessage + "Lecture " + lectureID + " not found. \n";
             }
         }
-        if(errorCount > 0) {
+        if(!errorMessage.equals("")) {
+            printError(errorMessage, ctx.getText());
             exitProgramError();
         }
 
