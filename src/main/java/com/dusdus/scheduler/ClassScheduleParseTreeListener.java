@@ -82,8 +82,9 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         if(credits > 10) {
             errorMessages = "Max credits limit exceeded. Max: 10, Found: " + credits + "\n";
         }
-        if(searchLecturer(lecturerName) == -1) {
-            errorMessages = errorMessages + "Lecturer " + lecturerName + " not found";
+        int lecturer_idx = searchLecturer(lecturerName);
+        if(lecturer_idx == -1) {
+            errorMessages = errorMessages + "Lecturer " + lecturerName + " not found.";
         }
         if(!errorMessages.equals("")) {
             printError(errorMessages, ctx.getText());
@@ -91,6 +92,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         }
 
         Lecture lecture = new Lecture(lectureID, maxParticipant, credits);
+        lecture.setLecturer(lecturers.get(lecturer_idx));
         lectures.add(lecture);
     }
 
