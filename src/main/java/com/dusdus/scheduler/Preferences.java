@@ -16,12 +16,12 @@ public class Preferences {
         preferences = new ArrayList<>();
     }
 
-    public void addPreference(int relationship, String schedule, float weight) {
+    public void addPreference(int relationship, Schedule schedule, float weight) {
         assert relationship != BETWEEN;
         preferences.add(new Preference(relationship, schedule, weight));
     }
 
-    public void addPreferenceBetween(String lowerBound, String upperBound, float weight) {
+    public void addPreferenceBetween(Schedule lowerBound, Schedule upperBound, float weight) {
         preferences.add(new Preference(BETWEEN, lowerBound, upperBound, weight));
     }
 
@@ -38,17 +38,17 @@ public class Preferences {
 
                 switch (p.relationship) {
                     case BEFORE:
-                        if (s.getHour() <= p.lowerBound.getHour()) {
+                        if (s.getTime() <= p.lowerBound.getTime()) {
                             weight = p.weight;
                         }
                         break;
                     case BETWEEN:
-                        if (s.getHour() >= p.lowerBound.getHour() && s.getHour() <= p.upperBound.getHour()) {
+                        if (s.getTime() >= p.lowerBound.getTime() && s.getTime() <= p.upperBound.getTime()) {
                             weight = p.weight;
                         }
                         break;
                     case AFTER:
-                        if (s.getHour() >= p.lowerBound.getHour()) {
+                        if (s.getTime() >= p.lowerBound.getTime()) {
                             weight = p.weight;
                         }
                 }
@@ -74,16 +74,16 @@ public class Preferences {
         private Schedule upperBound;
         private float weight;
 
-        public Preference(int relationship, String schedule, float weight) {
+        public Preference(int relationship, Schedule schedule, float weight) {
             this.relationship = relationship;
-            this.lowerBound = new Schedule(schedule);
+            this.lowerBound = schedule;
             this.weight = weight;
         }
 
-        public Preference(int relationship, String lowerBound, String upperBound, float weight) {
+        public Preference(int relationship, Schedule lowerBound, Schedule upperBound, float weight) {
             this.relationship = relationship;
-            this.lowerBound = new Schedule(lowerBound);
-            this.upperBound = new Schedule(upperBound);
+            this.lowerBound = lowerBound;
+            this.upperBound = upperBound;
             this.weight = weight;
         }
     }

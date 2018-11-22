@@ -1,20 +1,28 @@
 package com.dusdus.scheduler;
 
-import java.util.ArrayList;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CommonTokenStream;
+
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class Main {
     public static void main(String[] args) {
-//        try {
-//            ClassScheduleLexer classScheduleLexer = new ClassScheduleLexer(new ANTLRFileStream("resources/tes.dd"));
-//            CommonTokenStream tokens = new CommonTokenStream(classScheduleLexer);
-//            ClassScheduleParser classScheduleParser = new ClassScheduleParser(tokens);
-//
-//            Timetable timetable = new Timetable();
-//            classScheduleParser.addParseListener(new ClassScheduleParseTreeListener(timetable));
-//            classScheduleParser.program();
-//        } catch (Exception e) {
-//            // log error
-//        }
+        try {
+            InputStream is = new FileInputStream("./tes.dd");
+            CharStream cs = new ANTLRInputStream(is);
+            ClassScheduleLexer classScheduleLexer = new ClassScheduleLexer(cs);
+            CommonTokenStream tokens = new CommonTokenStream(classScheduleLexer);
+            ClassScheduleParser classScheduleParser = new ClassScheduleParser(tokens);
+
+            Timetable timetable = new Timetable();
+            classScheduleParser.addParseListener(new ClassScheduleParseTreeListener(timetable));
+            classScheduleParser.program();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        /*
 //SCHEDULING TEST
         Timetable timetable = new Timetable();
         ArrayList<Lecture> lectures = new ArrayList<>();
@@ -133,6 +141,6 @@ public class Main {
         }
 
         scheduler.schedule();
-
+*/
     }
 }

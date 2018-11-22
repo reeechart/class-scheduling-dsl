@@ -3,18 +3,17 @@ package com.dusdus.scheduler;
 public class Schedule {
 
     private String start;
-    private Integer hour;
+    private Integer time;
     private Integer day;
 
-    public Schedule(String start) {
+    public Schedule(int day, int time) {
         this.start = start;
-        String[] schedule = start.split(",");
-        hour = Integer.parseInt(schedule[1]);
-        day = Integer.parseInt(schedule[0]);
+        this.day = day;
+        this.time = time;
     }
 
-    public Integer getHour() {
-        return hour;
+    public Integer getTime() {
+        return time;
     }
 
     public Integer getDay() {
@@ -26,10 +25,10 @@ public class Schedule {
     }
 
     public void printSchedule() {
-        System.out.printf("%d %d\n", day, hour);
+        System.out.printf("%d %d\n", day, time);
     }
 
     public boolean compareSchedule(Schedule schedule) {
-        return schedule.getDay().equals(day) && schedule.getHour().equals(hour);
+        return schedule.getDay().equals(day) && schedule.getTime().equals(time);
     }
 }

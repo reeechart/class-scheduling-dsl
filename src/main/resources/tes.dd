@@ -1,1 +1,20 @@
 CREATE CLASSROOM C1234 10;
+CREATE CLASSROOM C2234 20;
+ADD FACILITY C1234 (
+    proyektor,
+    layar LCD
+);
+
+ADD FACILITY C2234 (
+    proyektor,
+    layar LCD
+);
+
+CREATE LECTURER Bayu Hendrajaya;
+ADD AVAILABILITY Bayu Hendrajaya (
+    1 10,
+    1 11,
+    2 15,
+    2 16
+);
+ADD CONSTRAINT IF4070 IF4071;

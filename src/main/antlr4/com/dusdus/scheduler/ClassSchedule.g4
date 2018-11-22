@@ -23,13 +23,16 @@ add_lecturer_availability: 'ADD AVAILABILITY ' lecturer_name WHITESPACE schedule
 add_constraint: 'ADD CONSTRAINT ' LECTURE_ID WHITESPACE LECTURE_ID;
 add_preference: 'ADD PREFERENCE ' LECTURE_ID WHITESPACE COMPARATOR 'THAN ' hour_of_day;
 show_timetable: 'SHOW TIMETABLE';
+show_classes: 'SHOW CLASSES';
+show_lectures: 'SHOW LECTURES';
 
 classroom_id: CLASSROOM_ID;
 lecture_id: LECTURE_ID;
 max_participant: NUM;
 capacity: NUM;
 credits: NUM;
-schedule: day_number WHITESPACE hour_of_day;
+time_slot: (WHITESPACE* day_number WHITESPACE hour_of_day WHITESPACE*);
+schedule: '(' time_slot (DELIMITER* time_slot)* ')';
 day_number: NUM; // 1-5
 hour_of_day: NUM; //(([7-9]) | ('1' [0-7]));
 facilities: '(' WHITESPACE* facility_name (DELIMITER facility_name)* DELIMITER* WHITESPACE* ')';
