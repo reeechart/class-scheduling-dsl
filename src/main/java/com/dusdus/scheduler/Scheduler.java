@@ -18,6 +18,10 @@ public class Scheduler {
         this.lectures = lectures;
         this.classrooms = classrooms;
         this.lectureScheduleArrayList = new ArrayList<>();
+
+        for(Lecture lecture: lectures) {
+            addLectureSchedule(lecture);
+        }
     }
 
     public void addConflictingConstraint(ConflictingConstraint constraint) {
@@ -49,7 +53,11 @@ public class Scheduler {
                 result.add(classroom);
             }
         }
-
+        if (result.size() == 0) {
+            System.out.println(String.format("Tidak terdapat ruang kelas yang memenuhi kebutuhan kelas %s",
+                    lecture.getId()));
+            System.exit(0);
+        }
         return result;
     }
 

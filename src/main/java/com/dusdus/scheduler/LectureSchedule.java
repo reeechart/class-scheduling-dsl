@@ -20,7 +20,11 @@ public class LectureSchedule {
     }
 
     public Classroom getClassroom(Integer idx) {
-        return availableClassroom.get(idx);
+        Classroom result = new Classroom("0",0);
+        if (availableClassroom != null && availableClassroom.size() > 0) {
+            result = availableClassroom.get(idx);
+        }
+        return  result;
     }
 
     public ArrayList<Classroom> getAvailableClassroom() {
