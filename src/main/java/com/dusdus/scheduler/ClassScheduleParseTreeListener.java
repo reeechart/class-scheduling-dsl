@@ -10,6 +10,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     private ArrayList<Classroom> classrooms;
     private ArrayList<Lecturer> lecturers;
     private ConflictingConstraint constraints;
+    private ClassroomPreferences classroomPreferences;
     private int warningCount = 0;
 
     private final int MIN_DAY = 0;
@@ -17,10 +18,11 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     private final int MIN_TIME = 0;
     private final int MAX_TIME = 10;
 
-    public ClassScheduleParseTreeListener(ArrayList<Lecture> lectures, ArrayList<Classroom> classrooms, ConflictingConstraint constraints) {
+    public ClassScheduleParseTreeListener(ArrayList<Lecture> lectures, ArrayList<Classroom> classrooms, ConflictingConstraint constraints, ClassroomPreferences classroomPreferences) {
         this.lectures = lectures;
         this.classrooms = classrooms;
         this.constraints = constraints;
+        this.classroomPreferences = classroomPreferences;
         lecturers = new ArrayList<Lecturer>();
     }
 
@@ -178,6 +180,36 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             addPreferenceToLecturer(lecturer, ctx.time_preferences().time_preference());
         } else {
             printError("Lecturer " + lecturerName + " not found.", ctx.getText());
+        }
+    }
+
+    @Override
+    public void exitAdd_classroom_preferences(ClassScheduleParser.Add_classroom_preferencesContext ctx) {
+        String lectureID = ctx.LECTURE_ID().toString();
+        int lectureIdx = searchLecture(lectureID);
+        if (lectureIdx != -1) {
+            ArrayList<ClassScheduleParser.Weighted_classroomContext> weightedClassroomContexts =
+                    (ArrayList<ClassScheduleParser.Weighted_classroomContext>) ctx.list_of_prefered_classroom().weighted_classroom();
+
+            String errorMessage = "";
+            for(ClassScheduleParser.Weighted_classroomContext weightedClassroomContext : weightedClassroomContexts) {
+                String classroomID = weightedClassroomContext.classroom_id().CLASSROOM_ID().toString();
+                int classroomIdx = searchClassroom(classroomID);
+                int priority = Integer.parseInt(weightedClassroomContext.priority().NUM().toString());
+                if(classroomIdx != -1) {
+                    classroomPreferences.addPreference(lectureID, classrooms.get(classroomIdx), priority);
+                } else {
+                    errorMessage = errorMessage + "Classroom " + classroomID + " not found\n";
+                }
+            }
+
+            if(!errorMessage.equals("")) {
+                printError(errorMessage, ctx.getText());
+                exitProgramError();
+            }
+        } else {
+            printError("Lecture " + lectureID + " not found.", ctx.getText());
+            exitProgramError();
         }
     }
 

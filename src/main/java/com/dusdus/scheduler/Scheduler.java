@@ -19,10 +19,6 @@ public class Scheduler {
         this.lectures = lectures;
         this.classrooms = classrooms;
         this.lectureScheduleArrayList = new ArrayList<>();
-
-        for(Lecture lecture: lectures) {
-            addLectureSchedule(lecture);
-        }
     }
 
     public void addConflictingConstraint(ConflictingConstraint constraint) {
@@ -69,7 +65,7 @@ public class Scheduler {
         ArrayList<Classroom> result = findClassrooms(lecture);
         LectureSchedule lectureSchedule = new LectureSchedule(result, lecture);
         lectureScheduleArrayList.add(lectureSchedule);
-        System.out.println(String.format("SIZE: %d ", lectureScheduleArrayList.size()));
+//        System.out.println(String.format("SIZE: %d ", lectureScheduleArrayList.size()));
     }
 
     public void setLectureScheduleToTimetable(LectureSchedule lectureSchedule) {
@@ -77,8 +73,11 @@ public class Scheduler {
     }
 
     public void schedule() {
+        for(Lecture lecture: lectures) {
+            addLectureSchedule(lecture);
+        }
         for (int i = 0; i < lectureScheduleArrayList.size(); i++) {
-            System.out.println(String.format("INDEX: %d", i));
+//            System.out.println(String.format("INDEX: %d", i));
             setLectureScheduleToTimetable(lectureScheduleArrayList.get(i));
         }
         timetable.printTimetable();
