@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
-    private Timetable timetable;
     private ArrayList<Lecture> lectures;
     private ArrayList<Classroom> classrooms;
     private ArrayList<Lecturer> lecturers;
@@ -18,12 +17,11 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     private final int MIN_TIME = 0;
     private final int MAX_TIME = 23;
 
-    public ClassScheduleParseTreeListener(Timetable timetable) {
-        this.timetable = timetable;
-        lectures = new ArrayList<Lecture>();
-        classrooms = new ArrayList<Classroom>();
+    public ClassScheduleParseTreeListener(ArrayList<Lecture> lectures, ArrayList<Classroom> classrooms, ConflictingConstraint constraints) {
+        this.lectures = lectures;
+        this.classrooms = classrooms;
+        this.constraints = constraints;
         lecturers = new ArrayList<Lecturer>();
-        constraints = new ConflictingConstraint();
     }
 
 //    public void enterProgram(ClassScheduleParser.ProgramContext ctx) {
