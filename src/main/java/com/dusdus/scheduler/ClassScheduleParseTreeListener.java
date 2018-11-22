@@ -170,7 +170,15 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
 
     @Override
     public void exitAdd_preference(ClassScheduleParser.Add_preferenceContext ctx) {
-        System.out.println("Lecture " + ctx.LECTURE_ID() + " preferably placed " + ctx.COMPARATOR() + " " + ctx.hour_of_day());
+        String lecturerName = extractWORDS(ctx.lecturer_name().WORD());
+        int lecturerIndex = searchLecturer(lecturerName);
+        if (lecturerIndex != -1) {
+            Lecturer lecturer = lecturers.get(lecturerIndex);
+            LecturerSchedulePreferences preferences = new LecturerSchedulePreferences();
+            addPreferenceToLecturer(lecturer, ctx.time_preferences().time_preference());
+        } else {
+            printError("Lecturer " + lecturerName + " not found.", ctx.getText());
+        }
     }
 
     @Override
@@ -217,6 +225,25 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
                 System.exit(1);
             }
         }
+    }
+
+    private void addPreferenceToLecturer(Lecturer lecturer, List<ClassScheduleParser.Time_preferenceContext> preferences) {
+        LecturerSchedulePreferences lecturerSchedulePreferences = new LecturerSchedulePreferences();
+        for (ClassScheduleParser.Time_preferenceContext timePreference: preferences) {
+            int day = Integer.parseInt(timePreference.day_number().NUM().toString());
+            int time = Integer.parseInt(timePreference.hour_of_day().NUM().toString());
+            switch (timePreference.TIME_COMPARATOR().toString()) {
+                case LecturerSchedulePreferences.BEFORE_STRING:
+                    lecturerSchedulePreferences.addPreference(LecturerSchedulePreferences.BEFORE,
+                        new Schedule(day, time), 10);
+                    break;
+                case LecturerSchedulePreferences.AFTER_STRING:
+                    lecturerSchedulePreferences.addPreference(LecturerSchedulePreferences.AFTER,
+                        new Schedule(day, time), 10);
+                    break;
+            }
+        }
+        lecturer.setPreferences(lecturerSchedulePreferences);
     }
 
     private boolean isDayValid(int day) {
