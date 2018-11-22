@@ -109,7 +109,12 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     public void exitCreate_lecturer(ClassScheduleParser.Create_lecturerContext ctx) {
         String lecturerName = extractWORDS(ctx.lecturer_name().WORD());
         Lecturer lecturer = new Lecturer(lecturerName);
-        lecturers.add(lecturer);
+        int lecturerIndex = searchLecturer(lecturerName);
+        if (lecturerIndex == -1) {
+            lecturers.add(lecturer);
+        } else {
+            printWarning("Lecturer " + lecturerName + " already exists", ctx.getText());
+        }
     }
 
     @Override
