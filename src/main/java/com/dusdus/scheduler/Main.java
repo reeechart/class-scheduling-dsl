@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 import javax.sound.midi.SysexMessage;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -14,7 +15,8 @@ import java.util.Iterator;
 public class Main {
     public static void main(String[] args) {
         try {
-            InputStream is = ClassLoader.getSystemResourceAsStream("tes.dd");
+            InputStream is = new FileInputStream("./tes.dd");
+//            InputStream is = ClassLoader.getSystemResourceAsStream("./tes.dd");
             CharStream cs = new ANTLRInputStream(is);
             ClassScheduleLexer classScheduleLexer = new ClassScheduleLexer(cs);
             CommonTokenStream tokens = new CommonTokenStream(classScheduleLexer);
