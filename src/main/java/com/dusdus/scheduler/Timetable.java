@@ -28,7 +28,7 @@ public class Timetable {
 
         ArrayList<Schedule> scheduleList = lectureSchedule.getLecture().getLecturer().getAvailability();
 
-        System.out.println(String.format("CLASSROOM: %s", lectureSchedule.getClassroom(currentClassroom).getId()));
+//        System.out.println(String.format("CLASSROOM: %s", lectureSchedule.getClassroom(currentClassroom).getId()));
 
         // Set classroom according to availability and constraints
         for (int i = 0; i < scheduleList.size(); i++) {
