@@ -8,3 +8,11 @@ ADD FACILITY C2234 (
     proyektor,
     layar LCD
 );
+CREATE LECTURER Bayu Hendrajaya;
+ADD AVAILABILITY Bayu Hendrajaya (
+    1 10,
+    1 11,
+    2 15,
+    2 16
+);
+ADD CONSTRAINT IF4070 IF4071;
