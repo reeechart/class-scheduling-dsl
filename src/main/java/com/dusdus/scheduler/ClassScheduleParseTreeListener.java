@@ -226,15 +226,30 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         LecturerSchedulePreferences lecturerSchedulePreferences = new LecturerSchedulePreferences();
         for (ClassScheduleParser.Time_preferenceContext timePreference: preferences) {
             int day = Integer.parseInt(timePreference.day_number().NUM().toString());
-            int time = Integer.parseInt(timePreference.hour_of_day().NUM().toString());
-            switch (timePreference.TIME_COMPARATOR().toString()) {
+            int time = Integer.parseInt(timePreference.hour_of_day(0).NUM().toString());
+            String comparator = timePreference.TIME_COMPARATOR().toString();
+            comparator = comparator.replaceAll("\\s", "");
+            switch (comparator) {
                 case LecturerSchedulePreferences.BEFORE_STRING:
+                    System.out.println("enter before");
                     lecturerSchedulePreferences.addPreference(LecturerSchedulePreferences.BEFORE,
                         new Schedule(day, time), 10);
+                    System.out.println("BEFORE " + day + " " + time);
                     break;
                 case LecturerSchedulePreferences.AFTER_STRING:
+                    System.out.println("enter after");
                     lecturerSchedulePreferences.addPreference(LecturerSchedulePreferences.AFTER,
                         new Schedule(day, time), 10);
+                    System.out.println("AFTER" + day + " " + time);
+                    break;
+                case LecturerSchedulePreferences.BETWEEN_STRING:
+                    System.out.println("enter between");
+                    int lowerBound = time;
+                    int upperBound = Integer.parseInt(timePreference.hour_of_day(1).NUM().toString());
+                    Schedule lowerBoundSchedule = new Schedule(day, lowerBound);
+                    Schedule upperBoundSchedule = new Schedule(day, upperBound);
+                    lecturerSchedulePreferences.addPreferenceBetween(lowerBoundSchedule, upperBoundSchedule, 10);
+                    System.out.println("BETWEEN" + day + " " + lowerBound + " " + day + " " + upperBound);
                     break;
             }
         }

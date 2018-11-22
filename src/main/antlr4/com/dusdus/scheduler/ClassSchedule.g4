@@ -39,8 +39,8 @@ facilities: '(' WHITESPACE* facility_name (DELIMITER facility_name)* DELIMITER* 
 facility_name: (WORD) (WHITESPACE (WORD))*;
 lecturer_name: (WORD) (WHITESPACE (WORD))*;
 lecture_params: '(' WHITESPACE* lecturer_name DELIMITER max_participant DELIMITER credits WHITESPACE*')';
-time_preferences: '(' time_preference (DELIMITER* time_preference)* ')';
-time_preference: day_number WHITESPACE TIME_COMPARATOR WHITESPACE* hour_of_day;
+time_preferences: '(' WHITESPACE* time_preference (DELIMITER* time_preference)* WHITESPACE* ')';
+time_preference: day_number WHITESPACE TIME_COMPARATOR WHITESPACE* hour_of_day (WHITESPACE hour_of_day)?;
 
 /*
  * Lexer Rules
@@ -60,7 +60,7 @@ CLASSROOM_ID: 'C' DIGIT DIGIT DIGIT DIGIT;
 
 LECTURE_ID: (UPPERCASE UPPERCASE DIGIT DIGIT DIGIT DIGIT);
 
-TIME_COMPARATOR: ('BEFORE ' | 'AFTER ');
+TIME_COMPARATOR: ('BEFORE ' | 'AFTER ' | 'BETWEEN ');
 
 UPPERCASE: [A-Z];
 

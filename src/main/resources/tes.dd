@@ -27,12 +27,16 @@ ADD AVAILABILITY Yudistira Asnar (
     3 9
 );
 
-CREATE LECTURE IF4070 Bayu Hendrajaya, 5, 2;
-CREATE LECTURE IF4071 Yudistira Asnar, 10, 2;
+CREATE LECTURE IF4070 (Bayu Hendrajaya, 5, 2);
+CREATE LECTURE IF4071 (Yudistira Asnar, 10, 2);
 
 ADD CONSTRAINT IF4070 IF4071;
 
 ADD PREFERENCE Bayu Hendrajaya (
     1 BEFORE 4,
     2 AFTER 7
+);
+
+ADD PREFERENCE Yudistira Asnar (
+    3 BETWEEN 7 10
 );
