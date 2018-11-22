@@ -16,6 +16,7 @@ public class Main {
             ClassScheduleParser classScheduleParser = new ClassScheduleParser(tokens);
 
             Timetable timetable = new Timetable();
+            classScheduleParser.addParseListener(new ClassScheduleParseTreeListener(timetable));
             classScheduleParser.program();
         } catch (Exception e) {
             System.out.println(e);
