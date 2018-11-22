@@ -13,10 +13,10 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     private ConflictingConstraint constraints;
     private int warningCount = 0;
 
-    private final int MIN_DAY = 1;
-    private final int MAX_DAY = 7;
+    private final int MIN_DAY = 0;
+    private final int MAX_DAY = 4;
     private final int MIN_TIME = 0;
-    private final int MAX_TIME = 23;
+    private final int MAX_TIME = 10;
 
     public ClassScheduleParseTreeListener(Timetable timetable) {
         this.timetable = timetable;
