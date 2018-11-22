@@ -6,6 +6,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,8 +18,15 @@ public class Main {
             ClassScheduleParser classScheduleParser = new ClassScheduleParser(tokens);
 
             Timetable timetable = new Timetable();
-            classScheduleParser.addParseListener(new ClassScheduleParseTreeListener(timetable));
+            ArrayList<Lecture> lectures = new ArrayList<Lecture>();
+            ArrayList<Classroom> classrooms = new ArrayList<Classroom>();
+            ConflictingConstraint constraints = new ConflictingConstraint();
+            classScheduleParser.addParseListener(new ClassScheduleParseTreeListener(lectures, classrooms, constraints));
             classScheduleParser.program();
+
+            Scheduler scheduler = new Scheduler(timetable, lectures, classrooms);
+            scheduler.addConflictingConstraint(constraints);
+            scheduler.schedule();
         } catch (Exception e) {
             System.out.println(e);
         }
