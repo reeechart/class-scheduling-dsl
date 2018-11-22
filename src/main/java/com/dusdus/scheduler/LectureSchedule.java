@@ -45,7 +45,5 @@ public class LectureSchedule {
 
     public void printLectureSchedule() {
         System.out.printf("Lecture ID: %s - Classroom: %s \n", lecture.getId(),allocatedClassroom.getId());
-
     }
-
 }

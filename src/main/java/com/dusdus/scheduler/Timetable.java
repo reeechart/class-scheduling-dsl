@@ -31,7 +31,7 @@ public class Timetable {
         System.out.println(String.format("CLASSROOM: %s", lectureSchedule.getClassroom(currentClassroom).getId()));
 
         // Set classroom according to availability and constraints
-        for(int i = 0; i < scheduleList.size(); i++) {
+        for (int i = 0; i < scheduleList.size(); i++) {
             boolean isSetted = false;
             Schedule current = scheduleList.get(i);
 
@@ -84,8 +84,6 @@ public class Timetable {
             }
         }
 
-
-
         // Check if all credits is setted
         if (settedSchedule.size() < lectureSchedule.getLecture().getCredits()) {
             System.out.println(String.format("Setted SIZE: %d", settedSchedule.size()));
@@ -126,7 +124,7 @@ public class Timetable {
                     System.out.println(String.format("(%s-%s, %s),", current.getLecture().getId(),
                             current.getLecture().getLecturer().getName(), current.getAllocatedClassroom().getId()));
                 }
-                System.out.printf("]\n");
+                System.out.print("]\n");
             }
         }
     }

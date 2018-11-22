@@ -33,8 +33,8 @@ public class Main {
         /*
 //SCHEDULING TEST
         Timetable timetable = new Timetable();
-        ArrayList<Lecture> lectures = new ArrayList<Lecture>();
-        ArrayList<Classroom> classrooms = new ArrayList<Classroom>();
+        ArrayList<Lecture> lectures = new ArrayList<>();
+        ArrayList<Classroom> classrooms = new ArrayList<>();
 
         Schedule schedule = new Schedule("1,2");
         Schedule schedule2 = new Schedule("1,3");
@@ -49,6 +49,10 @@ public class Main {
         john.addSchedule(schedule);
         john.addSchedule(schedule2);
         john.addSchedule(schedule3);
+
+        Preferences johnPref = new Preferences();
+        johnPref.addPreference(Preferences.AFTER, "1,3", 10);
+        john.setPreferences(johnPref);
 
         Lecturer richard = new Lecturer("Richard");
         richard.addSchedule(schedule);
@@ -114,7 +118,6 @@ public class Main {
         classroom3.addFacility("proyektor");
         classroom3.addFacility("ac");
 
-
         classrooms.add(classroom);
         classrooms.add(classroom2);
         classrooms.add(classroom3);
@@ -141,11 +144,9 @@ public class Main {
 //
 //        System.out.println(lecture.getId());
 //        System.out.println(lecture.getMaxParticipants());
-        Iterator<Lecture> itr = lectures.iterator();
-        while(itr.hasNext()) {
-            Lecture lec = itr.next();
+        for (Lecture lec: lectures) {
             scheduler.addLectureSchedule(lec);
-        };
+        }
 
         scheduler.schedule();
 */

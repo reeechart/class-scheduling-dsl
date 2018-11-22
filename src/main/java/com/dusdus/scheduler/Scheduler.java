@@ -30,20 +30,15 @@ public class Scheduler {
 
     public ArrayList<Classroom> findClassrooms(Lecture lecture) {
         ArrayList<Classroom> result = new ArrayList<>();
-        Iterator itr = classrooms.iterator();
-        while(itr.hasNext()) {
+        for (Classroom classroom: classrooms) {
             boolean satisfiedCondition = true;
-            Classroom classroom = (Classroom)itr.next();
-
             // Check Capacity
             if (classroom.getCapacity() < lecture.getMaxParticipants()) {
                 satisfiedCondition = false;
             }
 
             // Check facilities
-            Iterator<String> facility = lecture.getFacilities().iterator();
-            while (facility.hasNext()) {
-                String fac = facility.next();
+            for (String fac : lecture.getFacilities()) {
                 if (!classroom.getFacilities().contains(fac)) {
                     satisfiedCondition = false;
                 }
@@ -79,7 +74,4 @@ public class Scheduler {
         }
         timetable.printTimetable();
     }
-
-
-
 }
