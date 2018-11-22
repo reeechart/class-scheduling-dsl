@@ -10,6 +10,10 @@ public class LecturerSchedulePreferences {
     public final static int BETWEEN = 0;
     public final static int AFTER = 1;
 
+    public final static String BEFORE_STRING = "BEFORE";
+    public final static String BETWEEN_STRING = "BETWEEN";
+    public final static String AFTER_STRING = "AFTER";
+
     private ArrayList<Preference> preferences;
 
     public LecturerSchedulePreferences() {
