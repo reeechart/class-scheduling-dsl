@@ -4,7 +4,7 @@ import java.util.*;
 
 // Time periods are inclusive (bounds are included)
 
-public class Preferences {
+public class LecturerSchedulePreferences {
 
     public final static int BEFORE = -1;
     public final static int BETWEEN = 0;
@@ -12,7 +12,7 @@ public class Preferences {
 
     private ArrayList<Preference> preferences;
 
-    public Preferences() {
+    public LecturerSchedulePreferences() {
         preferences = new ArrayList<>();
     }
 
@@ -26,7 +26,7 @@ public class Preferences {
     }
 
     public ArrayList<Schedule> applyPreferences(ArrayList<Schedule> availability) {
-        ArrayList<WeightedSchedule> weightedSchedules = new ArrayList<>();
+        ArrayList<WeightedSchedule> weightedSchedules = new ArrayList<>(availability.size());
 
         // Construct weighted schedule list from preferences list
         for (Schedule s: availability) {
@@ -61,7 +61,7 @@ public class Preferences {
         weightedSchedules.sort((s1, s2) -> -1 * Float.compare(s1.weight, s2.weight));
 
         // Retrieve sorted schedule
-        ArrayList<Schedule> sortedSchedule = new ArrayList<>();
+        ArrayList<Schedule> sortedSchedule = new ArrayList<>(availability.size());
         for (WeightedSchedule w: weightedSchedules) {
             sortedSchedule.add(w.schedule);
         }

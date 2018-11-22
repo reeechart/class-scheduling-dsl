@@ -12,6 +12,7 @@ public class Scheduler {
     private ArrayList<Classroom> classrooms;
     private ArrayList<LectureSchedule> lectureScheduleArrayList;
     private ConflictingConstraint constraints;
+    private ClassroomPreferences classroomPreferences;
 
     public Scheduler(Timetable timetable, ArrayList<Lecture> lectures, ArrayList<Classroom> classrooms) {
         this.timetable = timetable;
@@ -22,6 +23,10 @@ public class Scheduler {
 
     public void addConflictingConstraint(ConflictingConstraint constraint) {
         this.constraints = constraint;
+    }
+
+    public void addClassroomPreferences(ClassroomPreferences preferences) {
+        this.classroomPreferences = preferences;
     }
 
     public ArrayList<Classroom> findClassrooms(Lecture lecture) {
@@ -45,6 +50,9 @@ public class Scheduler {
             }
         }
 
+        if (classroomPreferences != null) {
+            result = classroomPreferences.applyPreferences(result, lecture);
+        }
         return result;
     }
 

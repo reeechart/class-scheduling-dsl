@@ -6,9 +6,17 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
+//        TestAntlr();
+        
+        // SCHEDULING TEST
+        TestScheduler();
+    }
+
+    public static void TestAntlr() {
         try {
             InputStream is = new FileInputStream("./tes.dd");
             CharStream cs = new ANTLRInputStream(is);
@@ -22,28 +30,29 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e);
         }
-        /*
-//SCHEDULING TEST
+    }
+
+    public static void TestScheduler() {
         Timetable timetable = new Timetable();
         ArrayList<Lecture> lectures = new ArrayList<>();
         ArrayList<Classroom> classrooms = new ArrayList<>();
 
-        Schedule schedule = new Schedule("1,2");
-        Schedule schedule2 = new Schedule("1,3");
-        Schedule schedule3 = new Schedule("1,4");
-        Schedule schedule4 = new Schedule("1,5");
-        Schedule schedule5 = new Schedule("1,6");
-        Schedule schedule6 = new Schedule("1,7");
-        Schedule wed1 = new Schedule("2,1");
-        Schedule wed6 = new Schedule("2,6");
+        Schedule schedule = new Schedule(1,2);
+        Schedule schedule2 = new Schedule(1,3);
+        Schedule schedule3 = new Schedule(1,4);
+        Schedule schedule4 = new Schedule(1,5);
+        Schedule schedule5 = new Schedule(1,6);
+        Schedule schedule6 = new Schedule(1,7);
+        Schedule wed1 = new Schedule(2,1);
+        Schedule wed6 = new Schedule(2,6);
 
         Lecturer john = new Lecturer("John");
         john.addSchedule(schedule);
         john.addSchedule(schedule2);
         john.addSchedule(schedule3);
 
-        Preferences johnPref = new Preferences();
-        johnPref.addPreference(Preferences.AFTER, "1,3", 10);
+        LecturerSchedulePreferences johnPref = new LecturerSchedulePreferences();
+        johnPref.addPreference(LecturerSchedulePreferences.AFTER, schedule2, 10);
         john.setPreferences(johnPref);
 
         Lecturer richard = new Lecturer("Richard");
@@ -110,6 +119,9 @@ public class Main {
         classroom3.addFacility("proyektor");
         classroom3.addFacility("ac");
 
+        ClassroomPreferences classroomPreferences = new ClassroomPreferences();
+        classroomPreferences.addPreference("IF4162", classroom3, 10);
+
         classrooms.add(classroom);
         classrooms.add(classroom2);
         classrooms.add(classroom3);
@@ -122,6 +134,7 @@ public class Main {
 
         Scheduler scheduler = new Scheduler(timetable, lectures, classrooms);
         scheduler.addConflictingConstraint(const1);
+        scheduler.addClassroomPreferences(classroomPreferences);
 //
 //        System.out.println(classroom.getId());
 //        System.out.println(classroom.getCapacity());
@@ -141,6 +154,5 @@ public class Main {
         }
 
         scheduler.schedule();
-*/
     }
 }

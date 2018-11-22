@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Lecturer {
     private String name;
     private ArrayList<Schedule> availability;
-    private Preferences preferences;
+    private LecturerSchedulePreferences preferences;
 
     public Lecturer(String name) {
         this.name = name;
@@ -24,12 +24,12 @@ public class Lecturer {
         return name;
     }
 
-    public void setPreferences(Preferences preferences) {
+    public void setPreferences(LecturerSchedulePreferences preferences) {
         this.preferences = preferences;
         this.availability = preferences.applyPreferences(availability);
     }
 
-    public Preferences getPreferences() {
+    public LecturerSchedulePreferences getPreferences() {
         return preferences;
     }
 }
