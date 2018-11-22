@@ -10,6 +10,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     private ArrayList<Lecture> lectures;
     private ArrayList<Classroom> classrooms;
     private ArrayList<Lecturer> lecturers;
+    private ConflictingConstraint constraints;
     private int warningCount = 0;
 
     private final int MIN_DAY = 1;
@@ -22,6 +23,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         lectures = new ArrayList<Lecture>();
         classrooms = new ArrayList<Classroom>();
         lecturers = new ArrayList<Lecturer>();
+        constraints = new ConflictingConstraint();
     }
 
     public void enterProgram(ClassScheduleParser.ProgramContext ctx) {
@@ -69,7 +71,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             }
         } else {
             printError("Classroom " + classroomID + " not found", ctx.getText());
-            System.exit(0);
+            exitProgramError();
         }
         // System.out.println("Facilities: " + facilities.toString());
     }
@@ -80,10 +82,22 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         String lecturerName = extractWORDS(ctx.lecture_params().lecturer_name().WORD());
         int maxParticipant = Integer.parseInt(ctx.lecture_params().max_participant().NUM().toString());
         int credits = Integer.parseInt(ctx.lecture_params().credits().NUM().toString());
+
+        String errorMessages = "";
         if(credits > 10) {
-            printError("Max credits limit exceeded. Max: 10, Found: " + credits, ctx.getText());
+            errorMessages = "Max credits limit exceeded. Max: 10, Found: " + credits + "\n";
         }
+        int lecturer_idx = searchLecturer(lecturerName);
+        if(lecturer_idx == -1) {
+            errorMessages = errorMessages + "Lecturer " + lecturerName + " not found.";
+        }
+        if(!errorMessages.equals("")) {
+            printError(errorMessages, ctx.getText());
+            exitProgramError();
+        }
+
         Lecture lecture = new Lecture(lectureID, maxParticipant, credits);
+        lecture.setLecturer(lecturers.get(lecturer_idx));
         lectures.add(lecture);
     }
 
@@ -106,7 +120,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             }
         } else {
             printError("Lecture " + lectureID + " not found", ctx.getText());
-            System.exit(0);
+            exitProgramError();
         }
     }
 
@@ -131,13 +145,29 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             addScheduleToLecturer(lecturer, ctx.schedule().time_slot());
         } else {
             printError("Lecturer " + lecturerName + " not found.", ctx.getText());
-            System.exit(0);
+            exitProgramError();
         }
     }
 
     @Override
     public void exitAdd_constraint(ClassScheduleParser.Add_constraintContext ctx) {
-        System.out.println("Lecture " + ctx.LECTURE_ID(0) + " and " + ctx.LECTURE_ID(1) + " must not placed in the same time");
+        String[] lectureIDs = new String[2];
+        lectureIDs[0] = ctx.LECTURE_ID(0).toString();
+        lectureIDs[1] = ctx.LECTURE_ID(1).toString();
+
+        String errorMessage = "";
+        for(String lectureID: lectureIDs) {
+            if(searchLecture(lectureID) == -1) {
+                errorMessage = errorMessage + "Lecture " + lectureID + " not found. \n";
+            }
+        }
+        if(!errorMessage.equals("")) {
+            printError(errorMessage, ctx.getText());
+            exitProgramError();
+        }
+
+        constraints.addKeyValue(lectureIDs[0], lectureIDs[1]);
+        constraints.addKeyValue(lectureIDs[1], lectureIDs[0]);
     }
 
     @Override
@@ -246,5 +276,13 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         System.out.println("Warning " + warningCount + ": " + message);
         System.out.println("Cause: " + cause);
         System.out.println();
+    }
+
+    private void exitProgramError() {
+        if(warningCount > 0) {
+            System.out.println("Warning total: " + warningCount + " warnings.");
+        }
+        System.out.println("Process terminated");
+        System.exit(0);
     }
 }
