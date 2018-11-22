@@ -10,6 +10,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     private ArrayList<Lecture> lectures;
     private ArrayList<Classroom> classrooms;
     private ArrayList<Lecturer> lecturers;
+    private ConflictingConstraint constraints;
     private int warningCount = 0;
 
     public ClassScheduleParseTreeListener(Timetable timetable) {
@@ -17,6 +18,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         lectures = new ArrayList<Lecture>();
         classrooms = new ArrayList<Classroom>();
         lecturers = new ArrayList<Lecturer>();
+        constraints = new ConflictingConstraint();
     }
 
     public void enterProgram(ClassScheduleParser.ProgramContext ctx) {
@@ -122,7 +124,23 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
 
     @Override
     public void exitAdd_constraint(ClassScheduleParser.Add_constraintContext ctx) {
-        System.out.println("Lecture " + ctx.LECTURE_ID(0) + " and " + ctx.LECTURE_ID(1) + " must not placed in the same time");
+        String[] lectureIDs = new String[2];
+        lectureIDs[0] = ctx.LECTURE_ID(0).toString();
+        lectureIDs[1] = ctx.LECTURE_ID(1).toString();
+
+        int errorCount = 0;
+        for(String lectureID: lectureIDs) {
+            if(searchLecture(lectureID) == -1) {
+                errorCount++;
+                printError("Lecture " + lectureID + " not found.", ctx.getText());
+            }
+        }
+        if(errorCount > 0) {
+            System.exit(0);
+        }
+
+        constraints.addKeyValue(lectureIDs[0], lectureIDs[1]);
+        constraints.addKeyValue(lectureIDs[1], lectureIDs[0]);
     }
 
     @Override
