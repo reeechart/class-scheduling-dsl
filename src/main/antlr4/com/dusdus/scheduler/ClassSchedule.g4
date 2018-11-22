@@ -21,7 +21,7 @@ add_requirement: 'ADD REQUIREMENT ' LECTURE_ID WHITESPACE facilities;
 create_lecturer: 'CREATE LECTURER ' lecturer_name;
 add_lecturer_availability: 'ADD AVAILABILITY ' lecturer_name WHITESPACE schedule;
 add_constraint: 'ADD CONSTRAINT ' LECTURE_ID WHITESPACE LECTURE_ID;
-add_preference: 'ADD PREFERENCE ' LECTURE_ID WHITESPACE COMPARATOR 'THAN ' hour_of_day;
+add_preference: 'ADD PREFERENCE ' lecturer_name WHITESPACE time_preferences;
 show_timetable: 'SHOW TIMETABLE';
 show_classes: 'SHOW CLASSES';
 show_lectures: 'SHOW LECTURES';
@@ -39,6 +39,8 @@ facilities: '(' WHITESPACE* facility_name (DELIMITER facility_name)* DELIMITER* 
 facility_name: (WORD) (WHITESPACE (WORD))*;
 lecturer_name: (WORD) (WHITESPACE (WORD))*;
 lecture_params: '(' WHITESPACE* lecturer_name DELIMITER max_participant DELIMITER credits WHITESPACE*')';
+time_preferences: '(' time_preference (DELIMITER* time_preference)* ')';
+time_preference: day_number WHITESPACE TIME_COMPARATOR WHITESPACE* hour_of_day;
 
 /*
  * Lexer Rules
@@ -58,7 +60,7 @@ CLASSROOM_ID: 'C' DIGIT DIGIT DIGIT DIGIT;
 
 LECTURE_ID: (UPPERCASE UPPERCASE DIGIT DIGIT DIGIT DIGIT);
 
-COMPARATOR: ('GREATER ' | 'LESS ');
+TIME_COMPARATOR: ('BEFORE ' | 'AFTER ');
 
 UPPERCASE: [A-Z];
 
