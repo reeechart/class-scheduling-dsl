@@ -27,8 +27,8 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         int classCapacity = Integer.parseInt(ctx.capacity().NUM().toString());
         int idx = searchClassroom(classroomID);
         if(idx != -1) {
-            warningCount++;
-            System.out.println("Warning " + warningCount + ": classroom " + classroomID + " already exists.");
+            printWarning("Classroom " + classroomID + " already exists.");
+            System.out.println();
         } else {
             Classroom classroom = new Classroom(classroomID, classCapacity);
             classrooms.add(classroom);
@@ -60,7 +60,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
                 classrooms.get(idx).addFacility(facility);
             }
         } else {
-            System.out.println("Classroom " + classroomID + " not found");
+            printError("Classroom " + classroomID + " not found");
             System.exit(0);
         }
         // System.out.println("Facilities: " + facilities.toString());
@@ -93,5 +93,14 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         }
         idx = (classroomExist)? idx : -1;
         return idx;
+    }
+
+    private void printError(String message) {
+        System.out.println("Error: " + message);
+    }
+
+    private void printWarning(String message) {
+        warningCount++;
+        System.out.println("Warning " + warningCount + ": " + message);
     }
 }
