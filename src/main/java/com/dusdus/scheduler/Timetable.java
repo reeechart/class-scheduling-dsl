@@ -1,8 +1,6 @@
 package com.dusdus.scheduler;
 
-import javax.lang.model.type.IntersectionType;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Timetable {
     private ArrayList<ArrayList<ArrayList<LectureSchedule>>> timetable;
@@ -48,12 +46,12 @@ public class Timetable {
 
             current.printSchedule();
             // Iterate through setted lecture in available schedule
-            Integer allocatedLectureSize = timetable.get(current.getDay()).get(current.getHour()).size();
+            Integer allocatedLectureSize = timetable.get(current.getDay()).get(current.getTime()).size();
             boolean conflict = false;
 
             for (int j = 0; j < allocatedLectureSize; j++) {
                 System.out.println(String.format("Allocated Lecture index: %d", j));
-                LectureSchedule settedLecture = timetable.get(current.getDay()).get(current.getHour()).get(j);
+                LectureSchedule settedLecture = timetable.get(current.getDay()).get(current.getTime()).get(j);
 
                 // Check if classroom is used
                 if (settedLecture.getAllocatedClassroom().getId()
@@ -78,7 +76,7 @@ public class Timetable {
                 // Set lecture to timetable and allocate class
                 lectureSchedule.setAllocatedClassroom(lectureSchedule.getClassroom(currentClassroom));
                 LectureSchedule newLectureSchedule = new LectureSchedule(lectureSchedule);
-                setLectureSchedule(current.getDay(), current.getHour(), newLectureSchedule);
+                setLectureSchedule(current.getDay(), current.getTime(), newLectureSchedule);
                 settedSchedule.add(current);
                 if (settedSchedule.size() == lectureSchedule.getLecture().getCredits()) {
                     return settedSchedule;
@@ -106,7 +104,7 @@ public class Timetable {
             for (int i = 0; i < settedSchedule.size(); i++) {
                 Schedule schedule = settedSchedule.get(i);
                 settedSchedule.remove(i);
-                ArrayList<LectureSchedule> lectureList = timetable.get(schedule.getDay()).get((schedule.getHour()));
+                ArrayList<LectureSchedule> lectureList = timetable.get(schedule.getDay()).get((schedule.getTime()));
                 lectureList.remove(lectureList.size()-1);
             }
         }

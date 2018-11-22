@@ -9,12 +9,14 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     private Timetable timetable;
     private ArrayList<Lecture> lectures;
     private ArrayList<Classroom> classrooms;
+    private ArrayList<Lecturer> lecturers;
     private int warningCount = 0;
 
     public ClassScheduleParseTreeListener(Timetable timetable) {
         this.timetable = timetable;
         lectures = new ArrayList<Lecture>();
         classrooms = new ArrayList<Classroom>();
+        lecturers = new ArrayList<Lecturer>();
     }
 
     public void enterProgram(ClassScheduleParser.ProgramContext ctx) {
@@ -102,6 +104,43 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             System.exit(0);
         }
     }
+
+    @Override
+    public void exitCreate_lecturer(ClassScheduleParser.Create_lecturerContext ctx) {
+        String lecturerName = extractWORDS(ctx.lecturer_name().WORD());
+        System.out.println("Lecturer Name: " + lecturerName);
+    }
+
+    @Override
+    public void exitAdd_lecturer_availability(ClassScheduleParser.Add_lecturer_availabilityContext ctx) {
+        String lecturerName = extractWORDS(ctx.lecturer_name().WORD());
+        System.out.println("Lecturer Name: " + lecturerName);
+        for (int i = 0; i < ctx.schedule().time_slot().size(); i++) {
+            System.out.println("Lecturer Availability: " + ctx.schedule().time_slot(i).day_number().NUM() + " " + ctx.schedule().time_slot(i).hour_of_day().NUM());
+        }
+    }
+
+    @Override
+    public void exitAdd_constraint(ClassScheduleParser.Add_constraintContext ctx) {
+        System.out.println("Lecture " + ctx.LECTURE_ID(0) + " and " + ctx.LECTURE_ID(1) + " must not placed in the same time");
+    }
+
+    @Override
+    public void exitAdd_preference(ClassScheduleParser.Add_preferenceContext ctx) {
+        System.out.println("Lecture " + ctx.LECTURE_ID() + " preferably placed " + ctx.COMPARATOR() + " " + ctx.hour_of_day());
+    }
+
+    @Override
+    public void exitCommand(ClassScheduleParser.CommandContext ctx) {
+        System.out.println("Exit Command");
+    }
+
+    @Override
+    public void exitProgram(ClassScheduleParser.ProgramContext ctx) {
+        System.out.println("Exit Program");
+        super.exitProgram(ctx);
+    }
+
     private String extractWORDS(List<TerminalNode> WORDS) {
         String extracted = "";
         int wordCount = 0;
@@ -115,6 +154,15 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         }
 
         return extracted;
+    }
+
+    private void addScheduleToLecturer(Lecturer lecturer, List<ClassScheduleParser.Time_slotContext> timeSlots) {
+        for (int i = 0; i < timeSlots.size(); i++) {
+            int day = Integer.parseInt(timeSlots.get(i).day_number().NUM().toString());
+            int time = Integer.parseInt(timeSlots.get(i).hour_of_day().NUM().toString());
+            Schedule schedule = new Schedule(day, time);
+            lecturer.addSchedule(schedule);
+        }
     }
 
     private int searchClassroom(String classroomID) {
@@ -156,53 +204,5 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         System.out.println("Warning " + warningCount + ": " + message);
         System.out.println("Cause: " + cause);
         System.out.println();
-    }
-
-    @Override
-    public void exitCreate_lecturer(ClassScheduleParser.Create_lecturerContext ctx) {
-        StringBuilder lecturerName = new StringBuilder();
-        for (int i = 0; i < ctx.lecturer_name().WORD().size(); i++) {
-            lecturerName.append(ctx.lecturer_name().WORD(i));
-            if (i != ctx.lecturer_name().WORD().size()-1) {
-                lecturerName.append(" ");
-            }
-        }
-        System.out.println("Lecturer Name: " + lecturerName.toString());
-    }
-
-    @Override
-    public void exitAdd_lecturer_availability(ClassScheduleParser.Add_lecturer_availabilityContext ctx) {
-        StringBuilder lecturerName = new StringBuilder();
-        for (int i = 0; i < ctx.lecturer_name().WORD().size(); i++) {
-            lecturerName.append(ctx.lecturer_name().WORD(i));
-            if (i != ctx.lecturer_name().WORD().size()-1) {
-                lecturerName.append(" ");
-            }
-        }
-        System.out.println("Lecturer Name: " + lecturerName.toString());
-        for (int i = 0; i < ctx.schedule().time_slot().size(); i++) {
-            System.out.println("Lecturer Availability: " + ctx.schedule().time_slot(i).day_number().NUM() + " " + ctx.schedule().time_slot(i).hour_of_day().NUM());
-        }
-    }
-
-    @Override
-    public void exitAdd_constraint(ClassScheduleParser.Add_constraintContext ctx) {
-        System.out.println("Lecture " + ctx.LECTURE_ID(0) + " and " + ctx.LECTURE_ID(1) + " must not placed in the same time");
-    }
-
-    @Override
-    public void exitAdd_preference(ClassScheduleParser.Add_preferenceContext ctx) {
-        System.out.println("Lecture " + ctx.LECTURE_ID() + " preferably placed " + ctx.COMPARATOR() + " " + ctx.hour_of_day());
-    }
-
-    @Override
-    public void exitCommand(ClassScheduleParser.CommandContext ctx) {
-        System.out.println("Exit Command");
-    }
-
-    @Override
-    public void exitProgram(ClassScheduleParser.ProgramContext ctx) {
-        System.out.println("Exit Program");
-        super.exitProgram(ctx);
     }
 }
