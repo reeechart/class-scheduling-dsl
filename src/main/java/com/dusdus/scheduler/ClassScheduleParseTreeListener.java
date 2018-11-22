@@ -173,6 +173,11 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         System.out.println("Lecture " + ctx.LECTURE_ID() + " preferably placed " + ctx.COMPARATOR() + " " + ctx.hour_of_day());
     }
 
+    @Override
+    public void exitAdd_classroom_preferences(ClassScheduleParser.Add_classroom_preferencesContext ctx) {
+        String lectureID = ctx.LECTURE_ID().toString();
+    }
+
 //    @Override
 //    public void exitCommand(ClassScheduleParser.CommandContext ctx) {
 //        System.out.println("Exit Command");
