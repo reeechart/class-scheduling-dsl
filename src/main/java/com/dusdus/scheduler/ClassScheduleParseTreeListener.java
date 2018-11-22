@@ -13,6 +13,11 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     private ConflictingConstraint constraints;
     private int warningCount = 0;
 
+    private final int MIN_DAY = 1;
+    private final int MAX_DAY = 7;
+    private final int MIN_TIME = 0;
+    private final int MAX_TIME = 23;
+
     public ClassScheduleParseTreeListener(Timetable timetable) {
         this.timetable = timetable;
         lectures = new ArrayList<Lecture>();
@@ -197,12 +202,26 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     }
 
     private void addScheduleToLecturer(Lecturer lecturer, List<ClassScheduleParser.Time_slotContext> timeSlots) {
-        for (int i = 0; i < timeSlots.size(); i++) {
-            int day = Integer.parseInt(timeSlots.get(i).day_number().NUM().toString());
-            int time = Integer.parseInt(timeSlots.get(i).hour_of_day().NUM().toString());
-            Schedule schedule = new Schedule(day, time);
-            lecturer.addSchedule(schedule);
+        for (ClassScheduleParser.Time_slotContext timeSlot : timeSlots) {
+            int day = Integer.parseInt(timeSlot.day_number().NUM().toString());
+            int time = Integer.parseInt(timeSlot.hour_of_day().NUM().toString());
+            if (isDayValid(day) && (isTimeValid(time))) {
+                Schedule schedule = new Schedule(day, time);
+                lecturer.addSchedule(schedule);
+            } else {
+                String cause = timeSlot.day_number().NUM().toString() + " " + timeSlot.hour_of_day().NUM().toString();
+                printError("Invalid day and time", cause);
+                System.exit(1);
+            }
         }
+    }
+
+    private boolean isDayValid(int day) {
+        return ((day >= MIN_DAY) && (day <= MAX_DAY));
+    }
+
+    private boolean isTimeValid(int time) {
+        return ((time >= MIN_TIME) && (time <= MAX_TIME));
     }
 
     private int searchLecturer(String lecturerName) {
