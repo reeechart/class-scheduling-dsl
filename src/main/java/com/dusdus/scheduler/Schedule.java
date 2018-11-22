@@ -1,8 +1,7 @@
 package com.dusdus.scheduler;
 
-import java.util.Calendar;
-
 public class Schedule {
+
     private String start;
     private Integer hour;
     private Integer day;
@@ -31,10 +30,6 @@ public class Schedule {
     }
 
     public boolean compareSchedule(Schedule schedule) {
-        if (schedule.getDay() == day && schedule.getHour() == hour) {
-            return true;
-        } else {
-            return false;
-        }
+        return schedule.getDay().equals(day) && schedule.getHour().equals(hour);
     }
 }

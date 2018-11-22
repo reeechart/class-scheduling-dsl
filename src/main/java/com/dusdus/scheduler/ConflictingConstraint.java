@@ -10,12 +10,7 @@ public class ConflictingConstraint {
     }
 
     public String getValue(String key) {
-        if (constraintList.containsKey(key)) {
-            return constraintList.get(key);
-        } else {
-            return "";
-        }
-
+        return constraintList.getOrDefault(key, "");
     }
 
     public void addKeyValue(String key, String value) {
