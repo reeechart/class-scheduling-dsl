@@ -23,6 +23,8 @@ add_lecturer_availability: 'ADD AVAILABILITY ' lecturer_name WHITESPACE schedule
 add_constraint: 'ADD CONSTRAINT ' LECTURE_ID WHITESPACE LECTURE_ID;
 add_preference: 'ADD PREFERENCE ' LECTURE_ID WHITESPACE COMPARATOR 'THAN ' hour_of_day;
 show_timetable: 'SHOW TIMETABLE';
+show_classes: 'SHOW CLASSES';
+show_lectures: 'SHOW LECTURES';
 
 classroom_id: CLASSROOM_ID;
 lecture_id: LECTURE_ID;
