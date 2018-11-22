@@ -12,7 +12,8 @@ command: (create_classroom |
           add_lecturer_availability |
           add_constraint|
           add_preference |
-          show_timetable)
+          show_timetable |
+          add_classroom_preferences)
           END_OF_COMMAND;
 create_classroom: 'CREATE CLASSROOM ' classroom_id WHITESPACE capacity;
 add_facility: 'ADD FACILITY ' classroom_id WHITESPACE facilities;
@@ -22,6 +23,7 @@ create_lecturer: 'CREATE LECTURER ' lecturer_name;
 add_lecturer_availability: 'ADD AVAILABILITY ' lecturer_name WHITESPACE schedule;
 add_constraint: 'ADD CONSTRAINT ' LECTURE_ID WHITESPACE LECTURE_ID;
 add_preference: 'ADD PREFERENCE ' LECTURE_ID WHITESPACE COMPARATOR 'THAN ' hour_of_day;
+add_classroom_preferences: 'ADD CLASSROOM PREFERENCES ' LECTURE_ID WHITESPACE* list_of_prefered_classroom;
 show_timetable: 'SHOW TIMETABLE';
 show_classes: 'SHOW CLASSES';
 show_lectures: 'SHOW LECTURES';
@@ -39,6 +41,9 @@ facilities: '(' WHITESPACE* facility_name (DELIMITER facility_name)* DELIMITER* 
 facility_name: (WORD) (WHITESPACE (WORD))*;
 lecturer_name: (WORD) (WHITESPACE (WORD))*;
 lecture_params: '(' WHITESPACE* lecturer_name DELIMITER max_participant DELIMITER credits WHITESPACE*')';
+list_of_prefered_classroom: '(' WHITESPACE* weighted_classroom (DELIMITER weighted_classroom)* DELIMITER* WHITESPACE* ')';
+weighted_classroom: '(' WHITESPACE* classroom_id DELIMITER priority WHITESPACE*')';
+priority: NUM;
 
 /*
  * Lexer Rules
