@@ -1,7 +1,10 @@
 package com.dusdus.scheduler;
 
+import org.antlr.v4.runtime.tree.TerminalNode;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     private Timetable timetable;
@@ -15,9 +18,9 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         classrooms = new ArrayList<Classroom>();
     }
 
-    public void enterProgram(ClassScheduleParser.ProgramContext ctx) {
-        System.out.println("Enter Program");
-    }
+//    public void enterProgram(ClassScheduleParser.ProgramContext ctx) {
+//        System.out.println("Enter Program");
+//    }
 
     @Override
     public void exitCreate_classroom(ClassScheduleParser.Create_classroomContext ctx) {
@@ -27,8 +30,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         int classCapacity = Integer.parseInt(ctx.capacity().NUM().toString());
         int idx = searchClassroom(classroomID);
         if(idx != -1) {
-            printWarning("Classroom " + classroomID + " already exists.");
-            System.out.println();
+            printWarning("Classroom " + classroomID + " already exists.", ctx.getText());
         } else {
             Classroom classroom = new Classroom(classroomID, classCapacity);
             classrooms.add(classroom);
@@ -47,20 +49,15 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             ArrayList<String> facilities = new ArrayList<String>();
             String facilityNameText = "";
             for (ClassScheduleParser.Facility_nameContext facilityName : facility_nameContexts) {
-                String words = facilityName.WORD().toString();
-                String[] wordList = words.substring(1, words.length() - 1).split(",");
-                for (String word : wordList) {
-                    facilityNameText = facilityNameText + word;
-                }
+                facilityNameText = extractWORDS(facilityName.WORD());
                 facilities.add(facilityNameText);
-                facilityNameText = "";
             }
 
             for(String facility : facilities) {
                 classrooms.get(idx).addFacility(facility);
             }
         } else {
-            printError("Classroom " + classroomID + " not found");
+            printError("Classroom " + classroomID + " not found", ctx.getText());
             System.exit(0);
         }
         // System.out.println("Facilities: " + facilities.toString());
@@ -68,17 +65,41 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
 
     @Override
     public void exitCreate_lecture(ClassScheduleParser.Create_lectureContext ctx) {
-
+        String lectureID = ctx.LECTURE_ID().toString();
+        String lecturerName = extractWORDS(ctx.lecture_params().lecturer_name().WORD());
+        int maxParticipant = Integer.parseInt(ctx.lecture_params().max_participant().NUM().toString());
+        int credits = Integer.parseInt(ctx.lecture_params().credits().NUM().toString());
+        if(credits > 10) {
+            printError("Max credits limit exceeded. Max: 10, Found: " + credits, ctx.getText());
+        }
+        Lecture lecture = new Lecture(lectureID, maxParticipant, credits);
+        lectures.add(lecture);
     }
 
     @Override
     public void exitAdd_requirement(ClassScheduleParser.Add_requirementContext ctx) {
+        String lectureID = ctx.LECTURE_ID().toString();
 
     }
 
     @Override
     public void exitCreate_lecturer(ClassScheduleParser.Create_lecturerContext ctx) {
 
+    }
+
+    private String extractWORDS(List<TerminalNode> WORDS) {
+        String extracted = "";
+        int wordCount = 0;
+        for(TerminalNode word : WORDS) {
+            if(wordCount == 0) {
+                extracted = word.toString();
+            } else {
+                extracted = extracted + " " + word.toString();
+            }
+            wordCount++;
+        }
+
+        return extracted;
     }
 
     private int searchClassroom(String classroomID) {
@@ -95,12 +116,16 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         return idx;
     }
 
-    private void printError(String message) {
+    private void printError(String message, String cause) {
         System.out.println("Error: " + message);
+        System.out.println("Cause: " + cause);
+        System.out.println();
     }
 
-    private void printWarning(String message) {
+    private void printWarning(String message, String cause) {
         warningCount++;
         System.out.println("Warning " + warningCount + ": " + message);
+        System.out.println("Cause: " + cause);
+        System.out.println();
     }
 }
