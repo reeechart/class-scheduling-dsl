@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-//        TestAntlr();
+        TestAntlr();
         
         // SCHEDULING TEST
-        TestScheduler();
+//        TestScheduler();
     }
 
     public static void TestAntlr() {
@@ -28,11 +28,13 @@ public class Main {
             ArrayList<Lecture> lectures = new ArrayList<Lecture>();
             ArrayList<Classroom> classrooms = new ArrayList<Classroom>();
             ConflictingConstraint constraints = new ConflictingConstraint();
-            classScheduleParser.addParseListener(new ClassScheduleParseTreeListener(lectures, classrooms, constraints));
+            ClassroomPreferences classroomPreferences = new ClassroomPreferences();
+            classScheduleParser.addParseListener(new ClassScheduleParseTreeListener(lectures, classrooms, constraints, classroomPreferences));
             classScheduleParser.program();
 
             Scheduler scheduler = new Scheduler(timetable, lectures, classrooms);
             scheduler.addConflictingConstraint(constraints);
+            scheduler.addClassroomPreferences(classroomPreferences);
             scheduler.schedule();
         } catch (Exception e) {
             System.out.println(e);
