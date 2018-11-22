@@ -110,15 +110,25 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     @Override
     public void exitCreate_lecturer(ClassScheduleParser.Create_lecturerContext ctx) {
         String lecturerName = extractWORDS(ctx.lecturer_name().WORD());
-        System.out.println("Lecturer Name: " + lecturerName);
+        Lecturer lecturer = new Lecturer(lecturerName);
+        int lecturerIndex = searchLecturer(lecturerName);
+        if (lecturerIndex == -1) {
+            lecturers.add(lecturer);
+        } else {
+            printWarning("Lecturer " + lecturerName + " already exists", ctx.getText());
+        }
     }
 
     @Override
     public void exitAdd_lecturer_availability(ClassScheduleParser.Add_lecturer_availabilityContext ctx) {
         String lecturerName = extractWORDS(ctx.lecturer_name().WORD());
-        System.out.println("Lecturer Name: " + lecturerName);
-        for (int i = 0; i < ctx.schedule().time_slot().size(); i++) {
-            System.out.println("Lecturer Availability: " + ctx.schedule().time_slot(i).day_number().NUM() + " " + ctx.schedule().time_slot(i).hour_of_day().NUM());
+        int lecturerIndex = searchLecturer(lecturerName);
+        if (lecturerIndex != -1) {
+            Lecturer lecturer = lecturers.get(lecturerIndex);
+            addScheduleToLecturer(lecturer, ctx.schedule().time_slot());
+        } else {
+            printError("Lecturer " + lecturerName + " not found.", ctx.getText());
+            System.exit(0);
         }
     }
 
@@ -181,6 +191,19 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             Schedule schedule = new Schedule(day, time);
             lecturer.addSchedule(schedule);
         }
+    }
+
+    private int searchLecturer(String lecturerName) {
+        int idx = 0;
+        boolean lecturerExist = false;
+        while (idx < lecturers.size() && !lecturerExist) {
+            if (lecturers.get(idx).getName().equals(lecturerName)) {
+                lecturerExist = true;
+            } else {
+                idx++;
+            }
+        }
+        return lecturerExist ? idx : -1;
     }
 
     private int searchClassroom(String classroomID) {
