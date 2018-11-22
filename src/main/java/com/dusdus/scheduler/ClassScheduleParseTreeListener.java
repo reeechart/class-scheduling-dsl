@@ -66,7 +66,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             }
         } else {
             printError("Classroom " + classroomID + " not found", ctx.getText());
-            System.exit(0);
+            exitProgramError();
         }
         // System.out.println("Facilities: " + facilities.toString());
     }
@@ -103,7 +103,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             }
         } else {
             printError("Lecture " + lectureID + " not found", ctx.getText());
-            System.exit(0);
+            exitProgramError();
         }
     }
 
@@ -128,7 +128,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             addScheduleToLecturer(lecturer, ctx.schedule().time_slot());
         } else {
             printError("Lecturer " + lecturerName + " not found.", ctx.getText());
-            System.exit(0);
+            exitProgramError();
         }
     }
 
@@ -146,7 +146,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             }
         }
         if(errorCount > 0) {
-            System.exit(0);
+            exitProgramError();
         }
 
         constraints.addKeyValue(lectureIDs[0], lectureIDs[1]);
@@ -245,5 +245,13 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         System.out.println("Warning " + warningCount + ": " + message);
         System.out.println("Cause: " + cause);
         System.out.println();
+    }
+
+    private void exitProgramError() {
+        if(warningCount > 0) {
+            System.out.println("Warning total: " + warningCount + " warnings.");
+        }
+        System.out.println("Process terminated");
+        System.exit(0);
     }
 }
