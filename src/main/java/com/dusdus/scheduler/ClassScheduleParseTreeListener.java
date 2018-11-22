@@ -26,14 +26,14 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         constraints = new ConflictingConstraint();
     }
 
-    public void enterProgram(ClassScheduleParser.ProgramContext ctx) {
-        System.out.println("Enter Program");
-    }
-
-    @Override
-    public void enterCommand(ClassScheduleParser.CommandContext ctx) {
-        System.out.println("Enter Command");
-    }
+//    public void enterProgram(ClassScheduleParser.ProgramContext ctx) {
+//        System.out.println("Enter Program");
+//    }
+//
+//    @Override
+//    public void enterCommand(ClassScheduleParser.CommandContext ctx) {
+//        System.out.println("Enter Command");
+//    }
 
     @Override
     public void exitCreate_classroom(ClassScheduleParser.Create_classroomContext ctx) {
@@ -175,16 +175,16 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         System.out.println("Lecture " + ctx.LECTURE_ID() + " preferably placed " + ctx.COMPARATOR() + " " + ctx.hour_of_day());
     }
 
-    @Override
-    public void exitCommand(ClassScheduleParser.CommandContext ctx) {
-        System.out.println("Exit Command");
-    }
-
-    @Override
-    public void exitProgram(ClassScheduleParser.ProgramContext ctx) {
-        System.out.println("Exit Program");
-        super.exitProgram(ctx);
-    }
+//    @Override
+//    public void exitCommand(ClassScheduleParser.CommandContext ctx) {
+//        System.out.println("Exit Command");
+//    }
+//
+//    @Override
+//    public void exitProgram(ClassScheduleParser.ProgramContext ctx) {
+//        System.out.println("Exit Program");
+//        super.exitProgram(ctx);
+//    }
 
     private String extractWORDS(List<TerminalNode> WORDS) {
         String extracted = "";

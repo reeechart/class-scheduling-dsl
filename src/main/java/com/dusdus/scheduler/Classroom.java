@@ -1,7 +1,6 @@
 package com.dusdus.scheduler;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class Classroom {
     private String id;
@@ -9,7 +8,7 @@ public class Classroom {
     private Integer capacity;
 
     public Classroom(String id, Integer capacity) {
-        facilities = new ArrayList<String>();
+        facilities = new ArrayList<>();
         this.id  = id;
         this.capacity = capacity;
     }
@@ -50,9 +49,7 @@ public class Classroom {
     public void printClassroom() {
         System.out.printf("Id: %s\n", id);
         System.out.printf("Capacity: %d\n",capacity);
-        Iterator<String> itr = facilities.iterator();
-        while(itr.hasNext()) {
-            String str = itr.next();
+        for (String str: facilities) {
             System.out.println(str);
         }
     }
