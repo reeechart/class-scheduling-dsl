@@ -1,1 +1,10 @@
 CREATE CLASSROOM C1234 10;
+ADD FACILITY C1234 (
+    proyektor,
+    layar LCD
+);
+
+ADD FACILITY C2234 (
+    proyektor,
+    layar LCD
+);

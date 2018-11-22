@@ -79,7 +79,24 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     @Override
     public void exitAdd_requirement(ClassScheduleParser.Add_requirementContext ctx) {
         String lectureID = ctx.LECTURE_ID().toString();
+        int idx = searchLecture(lectureID);
+        if(idx != -1) {
+            ArrayList<ClassScheduleParser.Facility_nameContext> facility_nameContexts =
+                    (ArrayList<ClassScheduleParser.Facility_nameContext>) ctx.facilities().facility_name();
+            ArrayList<String> facilities = new ArrayList<String>();
+            String facilityNameText = "";
+            for (ClassScheduleParser.Facility_nameContext facilityName : facility_nameContexts) {
+                facilityNameText = extractWORDS(facilityName.WORD());
+                facilities.add(facilityNameText);
+            }
 
+            for(String facility : facilities) {
+                lectures.get(idx).addFacility(facility);
+            }
+        } else {
+            printError("Lecture " + lectureID + " not found", ctx.getText());
+            System.exit(0);
+        }
     }
 
     @Override
@@ -113,6 +130,20 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             }
         }
         idx = (classroomExist)? idx : -1;
+        return idx;
+    }
+
+    private int searchLecture(String lectureID) {
+        int idx = 0;
+        boolean lectureExist = false;
+        while(idx < lectures.size() && !lectureExist) {
+            if(lectures.get(idx).getId().equals(lectureID)) {
+                lectureExist = true;
+            } else {
+                idx++;
+            }
+        }
+        idx = (lectureExist)? idx : -1;
         return idx;
     }
 
