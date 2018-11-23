@@ -16,9 +16,9 @@ An interpreter for DusDus Scheduling Language. DusDus Scheduling Language is a n
 ## Installation
 1. Download or clone from 
 http://gitlab.informatika.org/IF4150-ClassSchedulingDSL/class-scheduling-dsl
-2. Open terminal/powershell inside the target folder and go inside target folder. 
+2. Open terminal/powershell and go inside the folder.  
     ```
-    cd class-scheduling-dsl/target
+    cd class-scheduling-dsl
     ```
 3. Enter maven command 
     ```
@@ -26,11 +26,16 @@ http://gitlab.informatika.org/IF4150-ClassSchedulingDSL/class-scheduling-dsl
     ```
 
 ## How to use
-1. With the same terminal/powershell condition, enter command below. 
+1. Go inside the target folder.
     ```
-    java -jar ClassSchedulingDSL-1.0-SNAPSHOT-jar-with-dependencies.jar
+    cd target
+    ``` 
+2. Insert text file to the folder. 
+3. With the same terminal/powershell condition, enter command below. 
     ```
-2. Enter the language syntax as defined in Language Syntax.
+    java -jar ClassSchedulingDSL-1.0-SNAPSHOT-jar-with-dependencies.jar <filename>
+    ```
+4. Enter the language syntax as defined in Language Syntax.
 
 
 
