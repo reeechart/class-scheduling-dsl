@@ -3,20 +3,35 @@
 An interpreter for DusDus Scheduling Language. DusDus Scheduling Language is a new language for lecture scheduling.  
 
 **Developed by:**  
-| Name | NIM |
-| ---- | --- |
-| Felix Limanta | 13515065 |
-| Ferdinandus Richard | 13515066 |
-| Roland Hartanto | 13515107 |
-| Vincent Endrahadi | 13515117 |
+| Name | NIM |  
+| ---- | --- |  
+| Felix Limanta | 13515065 |  
+| Ferdinandus Richard | 13515066 |  
+| Roland Hartanto | 13515107 |  
+| Vincent Endrahadi | 13515117 |  
 
 ## Prerequisites
-
+1. Maven installed
 
 ## Installation
-
+1. Download or clone from 
+http://gitlab.informatika.org/IF4150-ClassSchedulingDSL/class-scheduling-dsl
+2. Open terminal/powershell inside the target folder and go inside target folder. 
+    ```
+    cd class-scheduling-dsl/target
+    ```
+3. Enter maven command 
+    ```
+    mvn install
+    ```
 
 ## How to use
+1. With the same terminal/powershell condition, enter command below. 
+    ```
+    java -jar ClassSchedulingDSL-1.0-SNAPSHOT-jar-with-dependencies.jar
+    ```
+2. Enter the language syntax as defined in Language Syntax.
+
 
 
 ## How it works 
