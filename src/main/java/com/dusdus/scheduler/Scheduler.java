@@ -76,7 +76,6 @@ public class Scheduler {
             addLectureSchedule(lecture);
         }
         for (int i = 0; i < lectureScheduleArrayList.size(); i++) {
-            System.out.println(String.format("INDEX: %d", i));
             setLectureScheduleToTimetable(lectureScheduleArrayList.get(i));
         }
         timetable.printTimetable();
