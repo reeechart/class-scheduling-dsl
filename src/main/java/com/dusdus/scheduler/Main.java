@@ -10,15 +10,19 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        TestAntlr();
-        
-        // SCHEDULING TEST
-//        TestScheduler();
+        if (args.length == 0) {
+            System.out.println("Please enter filename");
+        } else {
+            TestAntlr(args[0]);
+
+            // SCHEDULING TEST
+//          TestScheduler();
+        }
     }
 
-    public static void TestAntlr() {
+    public static void TestAntlr(String filename) {
         try {
-            InputStream is = new FileInputStream("./tes.dd");
+            InputStream is = new FileInputStream(filename);
             CharStream cs = new ANTLRInputStream(is);
             ClassScheduleLexer classScheduleLexer = new ClassScheduleLexer(cs);
             CommonTokenStream tokens = new CommonTokenStream(classScheduleLexer);
