@@ -26,20 +26,9 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         lecturers = new ArrayList<Lecturer>();
     }
 
-//    public void enterProgram(ClassScheduleParser.ProgramContext ctx) {
-//        System.out.println("Enter Program");
-//    }
-//
-//    @Override
-//    public void enterCommand(ClassScheduleParser.CommandContext ctx) {
-//        System.out.println("Enter Command");
-//    }
-
     @Override
     public void exitCreate_classroom(ClassScheduleParser.Create_classroomContext ctx) {
-        // System.out.println("Classroom ID:" + ctx.classroom_id().CLASSROOM_ID());
-        // System.out.println("Classroom Capacity " + ctx.capacity().NUM());
-        String classroomID = ctx.classroom_id().CLASSROOM_ID().toString();
+       String classroomID = ctx.classroom_id().CLASSROOM_ID().toString();
         int classCapacity = Integer.parseInt(ctx.capacity().NUM().toString());
         int idx = searchClassroom(classroomID);
         if(idx != -1) {
@@ -48,7 +37,6 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             Classroom classroom = new Classroom(classroomID, classCapacity);
             classrooms.add(classroom);
         }
-        // System.out.println("Classroom1:" + classrooms.get(0).getId());
     }
 
     @Override
@@ -73,7 +61,6 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
             printError("Classroom " + classroomID + " not found", ctx.getText());
             exitProgramError();
         }
-        // System.out.println("Facilities: " + facilities.toString());
     }
 
     @Override
@@ -171,7 +158,7 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
     }
 
     @Override
-    public void exitAdd_preference(ClassScheduleParser.Add_preferenceContext ctx) {
+    public void exitAdd_lecturer_time_preferences(ClassScheduleParser.Add_lecturer_time_preferencesContext ctx) {
         String lecturerName = extractWORDS(ctx.lecturer_name().WORD());
         int lecturerIndex = searchLecturer(lecturerName);
         if (lecturerIndex != -1) {
@@ -213,17 +200,6 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         }
     }
 
-//    @Override
-//    public void exitCommand(ClassScheduleParser.CommandContext ctx) {
-//        System.out.println("Exit Command");
-//    }
-//
-//    @Override
-//    public void exitProgram(ClassScheduleParser.ProgramContext ctx) {
-//        System.out.println("Exit Program");
-//        super.exitProgram(ctx);
-//    }
-
     private String extractWORDS(List<TerminalNode> WORDS) {
         String extracted = "";
         int wordCount = 0;
@@ -259,29 +235,25 @@ public class ClassScheduleParseTreeListener extends ClassScheduleBaseListener {
         for (ClassScheduleParser.Time_preferenceContext timePreference: preferences) {
             int day = Integer.parseInt(timePreference.day_number().NUM().toString());
             int time = Integer.parseInt(timePreference.hour_of_day(0).NUM().toString());
+            int priority = Integer.parseInt(timePreference.priority().NUM().toString());
+
             String comparator = timePreference.TIME_COMPARATOR().toString();
             comparator = comparator.replaceAll("\\s", "");
             switch (comparator) {
                 case LecturerSchedulePreferences.BEFORE_STRING:
-                    System.out.println("enter before");
                     lecturerSchedulePreferences.addPreference(LecturerSchedulePreferences.BEFORE,
-                        new Schedule(day, time), 10);
-                    System.out.println("BEFORE " + day + " " + time);
+                        new Schedule(day, time), priority);
                     break;
                 case LecturerSchedulePreferences.AFTER_STRING:
-                    System.out.println("enter after");
                     lecturerSchedulePreferences.addPreference(LecturerSchedulePreferences.AFTER,
-                        new Schedule(day, time), 10);
-                    System.out.println("AFTER" + day + " " + time);
+                        new Schedule(day, time), priority);
                     break;
                 case LecturerSchedulePreferences.BETWEEN_STRING:
-                    System.out.println("enter between");
                     int lowerBound = time;
                     int upperBound = Integer.parseInt(timePreference.hour_of_day(1).NUM().toString());
                     Schedule lowerBoundSchedule = new Schedule(day, lowerBound);
                     Schedule upperBoundSchedule = new Schedule(day, upperBound);
-                    lecturerSchedulePreferences.addPreferenceBetween(lowerBoundSchedule, upperBoundSchedule, 10);
-                    System.out.println("BETWEEN" + day + " " + lowerBound + " " + day + " " + upperBound);
+                    lecturerSchedulePreferences.addPreferenceBetween(lowerBoundSchedule, upperBoundSchedule, priority);
                     break;
             }
         }

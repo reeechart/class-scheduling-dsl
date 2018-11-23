@@ -11,7 +11,7 @@ command: (create_classroom |
           create_lecturer |
           add_lecturer_availability |
           add_constraint|
-          add_preference |
+          add_lecturer_time_preferences |
           show_timetable |
           add_classroom_preferences)
           END_OF_COMMAND;
@@ -23,7 +23,7 @@ create_lecturer: 'CREATE LECTURER ' lecturer_name;
 add_lecturer_availability: 'ADD AVAILABILITY ' lecturer_name WHITESPACE schedule;
 add_constraint: 'ADD CONSTRAINT ' LECTURE_ID WHITESPACE LECTURE_ID;
 add_classroom_preferences: 'ADD CLASSROOM PREFERENCES ' LECTURE_ID WHITESPACE* list_of_prefered_classroom;
-add_preference: 'ADD PREFERENCE ' lecturer_name WHITESPACE time_preferences;
+add_lecturer_time_preferences: 'ADD LECTURER PREFERENCES ' lecturer_name WHITESPACE time_preferences;
 show_timetable: 'SHOW TIMETABLE';
 show_classes: 'SHOW CLASSES';
 show_lectures: 'SHOW LECTURES';
@@ -42,7 +42,7 @@ facility_name: (WORD) (WHITESPACE (WORD))*;
 lecturer_name: (WORD) (WHITESPACE (WORD))*;
 lecture_params: '(' WHITESPACE* lecturer_name DELIMITER max_participant DELIMITER credits WHITESPACE*')';
 time_preferences: '(' WHITESPACE* time_preference (DELIMITER* time_preference)* WHITESPACE* ')';
-time_preference: day_number WHITESPACE TIME_COMPARATOR WHITESPACE* hour_of_day (WHITESPACE hour_of_day)?;
+time_preference: day_number WHITESPACE TIME_COMPARATOR WHITESPACE* hour_of_day (WHITESPACE hour_of_day)? WHITESPACE* priority;
 list_of_prefered_classroom: '(' WHITESPACE* weighted_classroom (DELIMITER weighted_classroom)* DELIMITER* WHITESPACE* ')';
 weighted_classroom: '(' WHITESPACE* classroom_id DELIMITER priority WHITESPACE*')';
 priority: NUM;
