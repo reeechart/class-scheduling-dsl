@@ -3,12 +3,13 @@
 An interpreter for DusDus Scheduling Language. DusDus Scheduling Language is a new language for lecture scheduling.  
 
 **Developed by:**  
-| Name | NIM |  
-| ---- | --- |  
-| Felix Limanta | 13515065 |  
-| Ferdinandus Richard | 13515066 |  
-| Roland Hartanto | 13515107 |  
-| Vincent Endrahadi | 13515117 |  
+
+| Name | NIM |
+| ---- | --- |
+| Felix Limanta | 13515065 |
+| Ferdinandus Richard | 13515066 |
+| Roland Hartanto | 13515107 |
+| Vincent Endrahadi | 13515117 |
 
 ## Prerequisites
 1. Maven installed
